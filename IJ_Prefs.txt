@@ -1,0 +1,32 @@
+#ImageJ 1.45b Preferences
+#Thu Feb 09 09:37:05 CET 2023
+showcolor=\#00FFFF
+prefs.options=4210688
+div-by-zero=Infinity
+precision=3
+fcolor=\#000000
+raw.height=512
+raw.width=512
+new.fill=0
+raw.type=0
+mark.width=0
+new.slices=1
+jpeg=75
+ij.x=1603
+raw.n=1
+ij.y=0
+ap.options=64
+measurements=19
+noise.sd=25.0
+bcolor=\#FFFFFF
+new.height=400
+fps=7.0
+new.type=0
+raw.options=0
+new.width=400
+roicolor=\#FFFF00
+new.name=Untitled
+menu.size=14
+raw.offset=0
+pp.options=1
+raw.gap=0
