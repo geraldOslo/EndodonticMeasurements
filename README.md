@@ -52,3 +52,16 @@ org.apache.maven.plugin.MojoExecutionException: Some Enforcer rules have failed.
 	pom.xml	/EndodonticMeasurements	line 8	Maven Build Problem
 The constructor OvalRoi(double, double, double, double) is undefined	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 1030	Java Problem
 The constructor PointRoi(double, double) is undefined	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 1068	Java Problem
+
+# Warnings
+I also get these warnings:
+Description	Resource	Path	Location	Type
+Enumeration is a raw type. References to generic type Enumeration<E> should be parameterized	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 721	Java Problem
+Enumeration is a raw type. References to generic type Enumeration<E> should be parameterized	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 732	Java Problem
+Enumeration is a raw type. References to generic type Enumeration<E> should be parameterized	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 741	Java Problem
+Enumeration is a raw type. References to generic type Enumeration<E> should be parameterized	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 1011	Java Problem
+Overriding managed version 1.53f for ij	pom.xml	/EndodonticMeasurements	line 93	Maven pom Loading Problem
+The import ij.ImagePlus is never used	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 28	Java Problem
+The static method getName(String) from the type RoiManager should be accessed in a static way	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 980	Java Problem
+The static method setColor(Color) from the type Roi should be accessed in a static way	Endodontic_Measurements.java	/EndodonticMeasurements/src/main/java/no/uio/odont/imagej	line 971	Java Problem
+
