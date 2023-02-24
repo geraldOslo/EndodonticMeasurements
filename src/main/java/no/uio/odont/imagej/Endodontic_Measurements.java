@@ -1,10 +1,90 @@
-/*
- * To the extent possible under law, the ImageJ developers have waived
- * all copyright and related or neighboring rights to this tutorial code.
- *
- * See the CC0 1.0 Universal license for details:
- *     http://creativecommons.org/publicdomain/zero/1.0/
- */
+/**********************************************************************************************************************************
+Endodontic Measurements:
+Plugin for registration of sites and qualitative observations in periapical radiographs obtained under endodontic treatment
+The plugin can be used to measure extracted teeth in  the basic version or periapical radiographs in the
+extended version. The variable extended_version has to be set for choice of version.
+***********************************************************************************************************************************
+The sites are:
+		(basic/booth versions)
+		Apex (Radiographic Root Apex)
+		Apex gutta-percha
+		Root canal deviation 
+		Root canal entrance center
+		Side of root canal 1 mm from site 2 (M/D)
+		Side of root canal 4 mm from site 2 (M/D)
+
+		(extended version only)
+		Lesion periphery
+		Bone level (M/D)
+		Cemento-enamel junction (CEJ) (M/D)
+		Lesion extention (horizontal) (M/D)
+
+Sites with (M/D) are set on booth mesial and distal side.		
+
+The qualitative observations are:
+		Periapical index (PAI) (NS, 1 - 5)
+		Apical voids (NS, Y, N)
+		Coronal voids (NS, Y, N)
+		Orifice plug (NS, Y, N)
+		Apical file fracture (NS, Y, N)
+		Coronal file fracture (NS, Y, N)
+		Apical perforation (NS, Y, N)
+		Coronal perforation (NS, Y, N)
+		Post (NS, Y, N)
+		Restoration gap (NS, Y, N)
+		Caries (NS, None, Dentine, Pulp space)
+		Restoration (NS, None, Filling, Crown/bridge)
+		Support/load (NS, Two appr, One appr, No appr, Bridge abutment)
+
+		
+Where Y=yes, N = no, NS = not scored
+***********************************************************************************************************************************
+Output:
+1) Copy of image file with measure sites and lines burnt in, 
+   file name: Measured-<timestamp>-<original filename>.tif
+
+2) Resultfile in same diretory as imagefiles with one line per tooth,
+ format:
+<folder name/imagefilename>;<timestamp>;<EXIF-unit>;  
+<quadrant number>, <tooth number>, <root number>, 
+<apical voids (NS, N, Y)>, <coronal voids (NS, N, Y)>, <orifise plug (NS, N, Y)>, 
+<Apical file fracture (NS, N, Y)>, <Coronal file fracture (NS, N, Y)>, 
+<Apical perforation (NS, N, Y)>, <Coronal perforation (NS, N, Y)>, <Post(NS, N, Y)>,
+<Caries (NS, None, Dentine, Pulp space)>, <Restoration (NS, None, Filling, Crown/bridge)>,
+<Support/load (NS, Two appr, Lost tooth, No appr, Bridge abutment)>,
+<site coordinates, format x,y, 
+order: apex, apex GP, root canal deviation, canal entrance c., 
+Lesion periphery, Lesion side M, Lesion side D, 
+Bone level M, Bone level D,  CEJ M, CEJ D,
+canal side M 1 mm, canal side D 1 mm,  canal side M 4mm, canal side D 4 mm, >
+		 
+***********************************************************************************************************************************
+The plugin was created for a endodontic research project at the Faculty of dentistry, University of Oslo
+The program is not thoroughly tested for errors and side effects. The program is not optimized and the code
+is not very beautiful.
+***********************************************************************************************************************************
+License and disclaimers:
+Endodontic Measurements plugin
+Copyright (C) 2022  Gerald Torgersen
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License version 3 as published by
+	the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+***********************************************************************************************************************************	
+Programmed by Gerald R. Torgersen <gerald@odont.uio.no>
+Faculty of dentistry, University of Oslo, Norway
+
+Version 1.3 2022.02.01
+- plugin checks now if resultfile is locked for writing
+**********************************************************************************************************************************/
 
 package no.uio.odont.imagej;
 
@@ -27,17 +107,6 @@ import java.text.*;
 import ij.IJ;
 import ij.ImagePlus;
 
-
-/**
- * This example illustrates how to create an ImageJ {@link Command} plugin.
- * <p>
- * The code here is a simple Gaussian blur using ImageJ Ops.
- * </p>
- * <p>
- * You should replace the parameter fields with your own inputs and outputs,
- * and replace the {@link run} method implementation with your own logic.
- * </p>
- */
 
 public class Endodontic_Measurements extends PlugInFrame implements ActionListener {
 
