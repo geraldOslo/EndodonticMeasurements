@@ -88,9 +88,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij</artifactId>
-			<version>1.45b</version>
+    		<groupId>net.imagej</groupId>
+    		<artifactId>ij</artifactId>
+    		<version>1.53f</version>
 		</dependency>
 	</dependencies>
 </project>
