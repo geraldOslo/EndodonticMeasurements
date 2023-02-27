@@ -1,5 +1,5 @@
-#ImageJ 1.54b Preferences
-#Fri Feb 24 20:12:55 CET 2023
+#ImageJ 1.53t Preferences
+#Mon Feb 27 10:56:58 CET 2023
 showcolor=\#00FFFF
 prefs.options=4210720
 div-by-zero=Infinity
