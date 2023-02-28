@@ -97,15 +97,11 @@ import ij.*;
 import ij.process.*;
 import ij.gui.*;
 import javax.swing.*;
-import ij.ImagePlus;
+
 import ij.io .*;
 import ij.measure.*;
 import java.util.*;
 import java.text.*;
-
-
-import ij.IJ;
-import ij.ImagePlus;
 
 
 public class Endodontic_Measurements extends PlugInFrame implements ActionListener {
@@ -903,6 +899,16 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	// Message to low window in debug modus
 	private void dM(String message) {
 			if(debug) IJ.log(message);
+	}
+	
+	// main method for debugging and development
+	public static void main(String[] args) {
+		new ImageJ();
+	    ImagePlus image = IJ.openImage("M:\\GitHub\\EndodonticMeasurements\\src\\main\\resources\\sample.tif"); // has to be replaced with local image
+	    //IJ.runPlugIn(image, "Endodontic_Measurements", null);
+	    image.show();	    
+	    WindowManager.addWindow(image.getWindow());
+	    IJ.runPlugIn(image, "Endodontic_Measurements", null);
 	}
 	
 }
