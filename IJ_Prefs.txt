@@ -1,5 +1,5 @@
 #ImageJ 1.53t Preferences
-#Mon Feb 27 17:09:49 CET 2023
+#Tue Feb 28 15:45:42 CET 2023
 showcolor=\#00FFFF
 prefs.options=4210720
 div-by-zero=Infinity
@@ -9,8 +9,10 @@ raw.height=512
 raw.width=512
 new.fill=0
 raw.type=0
+.point.size=1
 new.slices=1
 jpeg=75
+.point.type=0
 ij.x=733
 raw.n=1
 ij.y=0
@@ -27,7 +29,7 @@ new.type=0
 raw.options=0
 prefs.options2=2
 new.width=400
-roicolor=\#FFFF00
+roicolor=\#0000FF
 menu.size=14
 raw.offset=0
 pp.options=0

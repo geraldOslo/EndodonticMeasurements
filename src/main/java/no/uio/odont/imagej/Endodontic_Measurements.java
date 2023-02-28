@@ -91,6 +91,8 @@ package no.uio.odont.imagej;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URISyntaxException;
+
 import ij.plugin.frame.*;
 import ij.plugin.BrowserLauncher;
 import ij.*;
@@ -794,7 +796,7 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 
 	private void resetSitesButtonGroup(ButtonGroup bg) {
 			JToggleButton tb;
-			Enumeration e = bg.getElements();
+			Enumeration<AbstractButton> e = bg.getElements();
 			tb =  (JToggleButton)e.nextElement();
 			tb.setSelected(false);				
 			tb =  (JToggleButton)e.nextElement();
@@ -803,7 +805,7 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 
 	void resetSitesButtonGroup(ButtonGroup [] bg) {
 			JToggleButton tb;
-			Enumeration e;
+			Enumeration<AbstractButton> e;
 
 			for (int i = 0; i < bg.length; i++) {
 					e = bg[i].getElements();
@@ -902,13 +904,16 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	}
 	
 	// main method for debugging and development
-	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException {
 		new ImageJ();
+		Class<?> clazz = Endodontic_Measurements.class;
+		java.net.URL url = clazz.getProtectionDomain().getCodeSource().getLocation();
+		java.io.File file = new java.io.File(url.toURI());
+		System.setProperty("plugins.dir", file.getAbsolutePath());
 	    ImagePlus image = IJ.openImage("M:\\GitHub\\EndodonticMeasurements\\src\\main\\resources\\sample.tif"); // has to be replaced with local image
-	    //IJ.runPlugIn(image, "Endodontic_Measurements", null);
 	    image.show();	    
 	    WindowManager.addWindow(image.getWindow());
-	    IJ.runPlugIn(image, "Endodontic_Measurements", null);
+	    IJ.runPlugIn(clazz.getName(), "");
 	}
 	
 }
@@ -1043,7 +1048,7 @@ class Root {
 	private void addToRoiManager(Roi r, String name, String color) {
 			color = "#" + color.substring(2); // format for runCommand: "#FF0000"
 			r.setName(name);
-			r.setColor(Color.decode(color));
+			Roi.setColor(Color.decode(color));
 			imp.setRoi(r);
 			rm.runCommand("Add", color, 0);		
 	}
@@ -1052,7 +1057,7 @@ class Root {
 	private int indexOfRoi(String roiName) {
 			int n = rm.getCount();
 			for (int i = 0; i < n; i++)
-					if (rm.getName(String.valueOf(i)).equals(roiName))
+					if (RoiManager.getName(String.valueOf(i)).equals(roiName))
 							return i;						
 			return - 1; // not found
 	}
@@ -1083,7 +1088,7 @@ class Root {
 	
 	public void burnInSites() {
 			ImageProcessor imPro = imp.getProcessor();
-			Enumeration keys = sites.keys();
+			Enumeration<String> keys = sites.keys();
 			Site s;
 			while(keys.hasMoreElements() ) {
 					s = sites.get(keys.nextElement());
