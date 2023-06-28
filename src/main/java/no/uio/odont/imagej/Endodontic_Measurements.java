@@ -94,7 +94,6 @@ import java.io.*;
 import java.net.URISyntaxException;
 
 import ij.plugin.frame.*;
-import ij.plugin.BrowserLauncher;
 import ij.*;
 import ij.process.*;
 import ij.gui.*;
@@ -108,7 +107,7 @@ import java.text.*;
 
 public class Endodontic_Measurements extends PlugInFrame implements ActionListener {
 
-	private final boolean debug = false; // Shows debug messages when set
+	private final boolean debug = true; // Shows debug messages when set
 
 	Panel panel;
 	ImagePlus imp;
@@ -785,7 +784,7 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	}
 
 	private void setSelectedRadioButton(ButtonGroup bg, int index) {
-			Enumeration e = bg.getElements();
+			Enumeration<AbstractButton> e = bg.getElements();
 			JToggleButton tb;
 			for (int i = 0; i <= index; i++) {
 					tb =  (JToggleButton)e.nextElement();
@@ -898,7 +897,7 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 
 	}
 
-	// Message to low window in debug modus
+	// Message to log window in debug modus
 	private void dM(String message) {
 			if(debug) IJ.log(message);
 	}
@@ -923,6 +922,8 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 **************************************************************************************************************************/
 class Root {
 	
+	private final boolean debug = true; // Shows debug messages when set
+	
 	ImagePlus imp;
 	RoiManager rm;		
 	
@@ -932,8 +933,9 @@ class Root {
 	Calibration calibration;
 	DecimalFormat formatter; 
 
-	final int near = 1;
-	final int far = 4;
+	// Diameters of circles indicating distance from AGP
+	final int NEAR = 2; // 1 mm from AGP
+	final int FAR = 8; // 2 mm from AGP
 	
 	Hashtable <String, Site> sites;
 	Hashtable <String, String> qualitativeObservations;
@@ -948,6 +950,8 @@ class Root {
 					formatter = new DecimalFormat("####");
 			else
 					formatter = new DecimalFormat("0.00");
+			dM(calibration.toString());
+			dM("Calibratet value from 1: " + calibration.getCValue(1));
 			DecimalFormatSymbols dFS = new DecimalFormatSymbols(Locale.US);
 			dFS.setDecimalSeparator(decimalFormatSymbol);
 			formatter.setDecimalFormatSymbols(dFS);
@@ -1030,11 +1034,12 @@ class Root {
 			Site s = sites.get(siteName);
 			double x = s.getX();
 			double y = s.getY();
-			//dM("Near: " + calibration.getRawX(near));
-			Roi r = circularRoiCenteredAtSite(x, y, 2 * calibration.getRawValue(near));
+			Roi r = circularRoiCenteredAtSite(x, y, calibration.getRawX(NEAR));
+			dM("circularRoiCenteredAtSite: " + x + ", " + y + ", " + 2 * calibration.getCValue(NEAR));
+			//dM("circularRoi diameters: " + 
 			addToRoiManager(r, "near", "0xFF0000");
 
-			r = circularRoiCenteredAtSite(x, y, 2 * calibration.getRawValue(far));
+			r = circularRoiCenteredAtSite(x, y, calibration.getRawX(FAR));
 			addToRoiManager(r, "far", "0xFF0000");
 			rm.select(0);		
 	}
@@ -1119,6 +1124,11 @@ class Root {
 					rm.runCommand("Delete");
 			}
 	}
+	
+	// Message to log window in debug modus
+		private void dM(String message) {
+				if(debug) IJ.log(message);
+		}
 	
 	
 }
