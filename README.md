@@ -8,6 +8,8 @@ The plugin is now running in Eclipse but there might be some errors after I chag
 # Purpose of the file:
 The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file. I will add a better description when I get the program to work.
 
+Now it does not work anymore ...
+
 
 	
 
