@@ -1,5 +1,5 @@
 #ImageJ 1.53t Preferences
-#Fri Mar 03 10:31:25 CET 2023
+#Thu Jun 29 11:21:06 CEST 2023
 showcolor=\#00FFFF
 prefs.options=4210720
 div-by-zero=Infinity
@@ -13,9 +13,9 @@ raw.type=0
 new.slices=1
 jpeg=75
 .point.type=0
-ij.x=733
+ij.x=822
 raw.n=1
-ij.y=0
+ij.y=105
 ap.options=64
 pp.height=340
 measurements=19

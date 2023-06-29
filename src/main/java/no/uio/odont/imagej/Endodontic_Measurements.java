@@ -1035,7 +1035,7 @@ class Root {
 			double x = s.getX();
 			double y = s.getY();
 			Roi r = circularRoiCenteredAtSite(x, y, calibration.getRawX(NEAR));
-			dM("circularRoiCenteredAtSite: " + x + ", " + y + ", " + 2 * calibration.getCValue(NEAR));
+			dM("circularRoiCenteredAtSite: " + x + ", " + y + ", " + calibration.getRawX(NEAR));
 			//dM("circularRoi diameters: " + 
 			addToRoiManager(r, "near", "0xFF0000");
 
