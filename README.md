@@ -53,7 +53,7 @@ Table 1: Sites registered
 | 14          | Lesion mesial                          |
 | 15          | Lesion distal                          |
 
-| ![Figure 1a: The sites](images/EndodonticTooth.svg) | ![Figure 1b: Circles to place root canal diameter](images/EndodonticRoot.svg) |
+| ![Figure 1a: The sites](/images/EndodonticTooth.svg) | ![Figure 1b: Circles to place root canal diameter](/images/EndodonticRoot.svg) |
 |:---:|:---:|
 
 
