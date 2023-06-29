@@ -3,8 +3,10 @@ This is an example Maven project implementing my Endotontic_Measurements plugin 
 I have a working version of this Plugin, and it has already been used in some research:<br>
 Jordal, K et al. (2021) [1].
 
+But now I try to do it the right way, using Maven, Git, Eclipse for maintaining the plugin. Sadly there is something wrong.
+
 # Problem
-But now I try to do it the right way, using Maven, Git, Eclipse for maintaining the plugin. Sadly there is something wrong. When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. 
+When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. 
 I would be so happy if anybody could give me some advice on that
 
 Class not found while attempting to run "Endodontic_measurements"
