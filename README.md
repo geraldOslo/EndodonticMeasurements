@@ -53,9 +53,15 @@ Table 1: Sites registered
 | 14          | Lesion mesial                          |
 | 15          | Lesion distal                          |
 
-| ![Figure 1a: The sites](/figures/EndodonticTooth.svg) | ![Figure 1b: Circles to place root canal diameter](/figures/EndodonticRoot.svg) |
-|:---:|:---:|
-|   | Figure 1: a) The sites b) The circle to place the root canal diameter |   |
+
+<table>
+    <tr>
+        <td><img src="/figures/EndodonticTooth.svg" alt="Figure 1a: The sites" width="500"/></td>
+        <td><img src="/figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="500"/></td>
+    </tr>
+</table>
+Figure 1: a) The sites b) The circle to place the root canal diameter
+
 
 Sites  4 and 5 are defined to obtain the Schneider angle (Schneider 1971) together with the AGP. The sites 4, 5 and 7, 8 are used to measure the diameter of the root canal at distances 1 and 4 mm to the AGP. The user is guided to the distances by two circles centered at the AGP (Figure 1b).  
 
