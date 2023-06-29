@@ -84,6 +84,8 @@ Faculty of dentistry, University of Oslo, Norway
 
 Version 1.3 2022.02.01
 - plugin checks now if resultfile is locked for writing
+Version 1.99
+- Plugin is now Maven project and repostory in GitHub - but does not work anymore
 **********************************************************************************************************************************/
 
 package no.uio.odont.imagej;
