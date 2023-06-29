@@ -86,6 +86,12 @@ Table 2: Quantities calculated
 |Bone height (attachment level) mesial | 9, 11|
 |Bone height (attachment level) distal | 10, 12|
 
+The distance between the apex and the AGP carries a sign depending on if there is a surplus (positive sign) or a deficit (negative sign) of filling material (Figure 3). The sign is automatically set in the evaluation spreadsheet by comparing the y-coordinates of points 1 and 2 together with the position of the tooth (maxilla or mandible) given by the quadrant number.
+
+<table>
+    <tr><img src="/figures/EndodonticRoot_d.svg" alt="Figure 3" width="800"/></tr>
+    <tr>Figure 3: Deficit (a) and surplus (b) of filling material</tr>
+</table>
 
 # References
 Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: 10.1111/iej.13669.
