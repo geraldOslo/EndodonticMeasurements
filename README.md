@@ -65,7 +65,7 @@ Table 1: Sites registered
 Sites  4 and 5 are defined to obtain the Schneider angle [2]  together with the AGP. The sites 4, 5 and 7, 8 are used to measure the diameter of the root canal at distances 1 and 4 mm to the AGP. The user is guided to the distances by two circles centered at the AGP (Figure 1b).  
 
 <table>
-    <tr><img src="/figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="800"/></tr>
+    <tr><img src="/figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="500"/></tr>
     <tr>Figure 2: The Scneider angle (a) and the trigonometrics (b)</tr>
 </table>
 
