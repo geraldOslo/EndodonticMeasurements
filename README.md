@@ -1,11 +1,21 @@
 This is an example Maven project implementing my Endotontic_Measurements plugin for ImagJ.
 
 I have a working version of this Plugin, and it has already been used in some research:<br>
-Jordal, K et al. (2021).
+Jordal, K et al. (2021) [1].
 
-But now I try to do it the right way, using Maven, Git, Eclipse for maintaining the plugin. Sadly there is something wrong. When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. I also get an error on declaring OvalRoi in the main file.
-
+# Problem
+But now I try to do it the right way, using Maven, Git, Eclipse for maintaining the plugin. Sadly there is something wrong. When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. 
 I would be so happy if anybody could give me some advice on that
+
+Class not found while attempting to run "Endodontic_measurements"
+java.lang.NoClassDefFoundError: Endodontic_measurements (wrong name: no/uio/odont/imagej/ Endodontic_measurements)
+
+I think this is because of the definition in the prom file:
+<properties>
+	<package-name>no.uio.odont.imagej</package-name>                   
+	<main-class>no.uio.odont.imagej.Endodontic_Measurements</main-class>        
+	<license.licenseName>CC BY 4.0</license.licenseName>                      
+	<license.copyrightOwners>Faculty of dentistry, University of Oslo</license.copyrightOwners> </properties>
 
 # Purpose of the file:
 The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file. I will add a better description when I get the program to work.
@@ -51,7 +61,7 @@ Table 1: Sites registered
 </table>
 
 
-Sites  4 and 5 are defined to obtain the Schneider angle (Schneider 1971) together with the AGP. The sites 4, 5 and 7, 8 are used to measure the diameter of the root canal at distances 1 and 4 mm to the AGP. The user is guided to the distances by two circles centered at the AGP (Figure 1b).  
+Sites  4 and 5 are defined to obtain the Schneider angle [2]  together with the AGP. The sites 4, 5 and 7, 8 are used to measure the diameter of the root canal at distances 1 and 4 mm to the AGP. The user is guided to the distances by two circles centered at the AGP (Figure 1b).  
 
 <table>
     <tr><img src="/figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="800"/></tr>
@@ -119,17 +129,3 @@ Table 3: Qualitative observations stored (NS for not scored)
 # References
 1. Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: [10.1111/iej.13669](https://doi.org/10.1111/iej.13669).
 2. Schneider SW. A comparison of canal preparations in straight and curved root canals. Oral Surg Oral Med Oral Pathol 1971;32(2):271-5.
-
-
-
-Class not found while attempting to run "Endodontic_measurements"
-java.lang.NoClassDefFoundError: Endodontic_measurements (wrong name: no/uio/odont/imagej/ Endodontic_measurements)
-
-I think this is because of the definition in the prom file:
-<properties>
-	<package-name>no.uio.odont.imagej</package-name>                   
-	<main-class>no.uio.odont.imagej.Endodontic_Measurements</main-class>        
-	<license.licenseName>CC BY 4.0</license.licenseName>                      
-	<license.copyrightOwners>Faculty of dentistry, University of Oslo</license.copyrightOwners> </properties>
-	
-
