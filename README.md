@@ -97,7 +97,7 @@ The distance between the apex and the AGP carries a sign depending on if there i
 
 ### Distances
 Distances d are calculated from the calibrated coordinates by the Pythagorean formula
-\frac{1}{\sqrt{x}}
+$$\sqrt{(x_1 - x_2)^2}
 
 # References
 Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: 10.1111/iej.13669.
