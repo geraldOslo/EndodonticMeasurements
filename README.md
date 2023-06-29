@@ -54,7 +54,7 @@ Table 1: Sites registered
 <table>
     <tr>
         <td><img src="/figures/EndodonticTooth.svg" alt="Figure 1a: The sites" width="500"/></td>
-        <td><img src="/figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="300"/></td>
+        <td><img src="/figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="350"/></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align:center">Figure 1: The sites (a) and the circle to place the root canal diameter (b)</td>
