@@ -1,158 +1,353 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="398.667px" height="253.333px" viewBox="0 0 398.667 253.333" enable-background="new 0 0 398.667 253.333"
-	 xml:space="preserve">
-<g>
-	<defs>
-		<rect id="SVGID_1_" x="149.666" y="48.613" width="249" height="204.72"/>
+
+<svg
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="210.53571"
+   height="248.39084"
+   viewBox="0 0 210.53571 248.39085"
+   enable-background="new 0 0 398.667 253.333"
+   xml:space="preserve"
+   sodipodi:docname="EndodonticToothAngles.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs167">
+	<defs
+   id="defs33">
+		<rect
+   id="SVGID_5_"
+   width="398.66699"
+   height="253.33299"
+   x="0"
+   y="0" />
 	</defs>
-	<clipPath id="SVGID_2_">
-		<use xlink:href="#SVGID_1_"  overflow="visible"/>
-	</clipPath>
-</g>
-<g>
-	<defs>
-		<rect id="SVGID_3_" width="398.667" height="253.333"/>
-	</defs>
-	<clipPath id="SVGID_4_">
-		<use xlink:href="#SVGID_3_"  overflow="visible"/>
-	</clipPath>
-	<path clip-path="url(#SVGID_4_)" fill="#D1D3D4" d="M52.333,20.41c0.051,9.672-17.525,91.702-14.371,103.92
-		c-2.912,27.471,35.649,108.003,35.649,108.003S48.45,161.609,47.926,131.606C49.856,87.829,64.333,22,64.333,22"/>
-	<path clip-path="url(#SVGID_4_)" fill="none" stroke="#000000" stroke-width="0.25" stroke-miterlimit="10" d="M52.333,20.41
-		c0.051,9.672-17.525,91.702-14.371,103.92c-2.912,27.471,35.649,108.003,35.649,108.003S48.45,161.609,47.926,131.606
-		C49.856,87.829,64.333,22,64.333,22"/>
-	<path clip-path="url(#SVGID_4_)" fill="none" stroke="#000000" stroke-miterlimit="10" d="M33,20.41
-		C33,32,21.333,89.667,20,103.667s0.333,28,6,47.667s36.3,81,46.15,81s-2.817-28-3.817-38s-12.008-50.334-12.008-72.667
-		c0-18.667,17.008-94.514,24.342-101.257"/>
-</g>
-<text transform="matrix(1 0 0 1 44.4165 18.6597)" font-family="'ArialMT'" font-size="10">4</text>
-<text transform="matrix(1 0 0 1 366.166 28.8398)" font-family="'ArialMT'" font-size="10">4</text>
-<text transform="matrix(1 0 0 1 27.8364 122.0898)" font-family="'ArialMT'" font-size="10">3</text>
-<text transform="matrix(1 0 0 1 345.8369 127.6699)" font-family="'ArialMT'" font-size="10">3</text>
-<g>
-	<defs>
-		<rect id="SVGID_5_" width="398.667" height="253.333"/>
-	</defs>
-	<clipPath id="SVGID_6_">
-		<use xlink:href="#SVGID_5_"  overflow="visible"/>
-	</clipPath>
-	<path clip-path="url(#SVGID_6_)" fill="#D1D3D4" d="M220,23.076c0.051,9.672-17.525,91.702-14.371,103.92
-		c-2.912,27.471,35.649,108.003,35.649,108.003s-25.161-70.723-25.686-100.726C217.523,90.495,232,24.666,232,24.666"/>
-	<path clip-path="url(#SVGID_6_)" fill="none" stroke="#000000" stroke-width="0.25" stroke-miterlimit="10" d="M220,23.076
-		c0.051,9.672-17.525,91.702-14.371,103.92c-2.912,27.471,35.649,108.003,35.649,108.003s-25.161-70.723-25.686-100.726
-		C217.523,90.495,232,24.666,232,24.666"/>
-	<path clip-path="url(#SVGID_6_)" fill="none" stroke="#000000" stroke-miterlimit="10" d="M200.667,23.076
-		c0,11.59-11.667,69.257-13,83.257s0.333,28,6,47.666c5.667,19.667,36.3,81,46.15,81c9.851,0-2.816-28-3.816-38
-		s-12.008-50.333-12.008-72.666c0-18.667,17.008-94.514,24.342-101.257"/>
-	<path clip-path="url(#SVGID_6_)" fill="#8B5E3C" d="M220,23.076c0.051,9.672-17.525,91.702-14.371,103.92
-		c-2.912,27.471,25.211,87.562,28.062,88.385c2.849,0.824-17.573-51.104-18.098-81.107C217.523,90.495,232,24.666,232,24.666"/>
-	<path clip-path="url(#SVGID_6_)" d="M39.083,117.733c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S39.083,116.905,39.083,117.733"/>
-	<path clip-path="url(#SVGID_6_)" d="M75.111,232.333c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S75.111,231.505,75.111,232.333"/>
-	<path clip-path="url(#SVGID_6_)" d="M235.189,215.381c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S235.189,214.553,235.189,215.381"/>
-	<path clip-path="url(#SVGID_6_)" d="M66.667,210.666c0,0.828-0.672,1.5-1.5,1.5c-0.828,0-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		C65.995,209.166,66.667,209.838,66.667,210.666"/>
-	<path clip-path="url(#SVGID_6_)" d="M222.606,164.998c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S222.606,164.17,222.606,164.998"/>
-	<path clip-path="url(#SVGID_6_)" d="M214.167,167.776c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S214.167,166.948,214.167,167.776"/>
-	<path clip-path="url(#SVGID_6_)" d="M217.468,132.666c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S217.468,131.838,217.468,132.666"/>
-	<path clip-path="url(#SVGID_6_)" d="M206.75,135.594c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S206.75,134.766,206.75,135.594"/>
-	<path clip-path="url(#SVGID_6_)" d="M59.598,21.91c0,0.828-0.672,1.5-1.5,1.5c-0.828,0-1.5-0.672-1.5-1.5
-		c0-0.828,0.672-1.5,1.5-1.5C58.925,20.41,59.598,21.082,59.598,21.91"/>
-</g>
-<text transform="matrix(1 0 0 1 76.8335 236.583)" font-family="'ArialMT'" font-size="10">1</text>
-<text transform="matrix(1 0 0 1 56.5938 213.8828)" font-family="'ArialMT'" font-size="10">2</text>
-<text transform="matrix(1 0 0 1 382.4336 241.8828)" font-family="'ArialMT'" font-size="10">2</text>
-<g>
-	<defs>
-		<rect id="SVGID_7_" width="398.667" height="253.333"/>
-	</defs>
-	<clipPath id="SVGID_8_">
-		<use xlink:href="#SVGID_7_"  overflow="visible"/>
+	<clipPath
+   id="SVGID_6_">
+		<use
+   xlink:href="#SVGID_5_"
+   overflow="visible"
+   id="use35" />
 	</clipPath>
 	
-		<line clip-path="url(#SVGID_8_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" x1="60.729" y1="11.984" x2="13.873" y2="229.711"/>
 	
-		<line clip-path="url(#SVGID_8_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" x1="37.583" y1="117.733" x2="65.167" y2="210.666"/>
 	
-		<path clip-path="url(#SVGID_8_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="2,1" d="
-		M45.249,83.917c15.458,3.489,27.002,17.304,27.002,33.816c0,19.146-15.521,34.667-34.667,34.667c-2.371,0-4.687-0.237-6.925-0.691"
-		/>
-</g>
-<text transform="matrix(1 0 0 1 36.0835 149.167)" font-family="'ArialMT'" font-size="10">α</text>
-<text transform="matrix(1 0 0 1 63.6636 123.3364)" font-family="'ArialMT'" font-size="10">β</text>
-<g>
-	<defs>
-		<rect id="SVGID_9_" width="398.667" height="253.333"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	<defs
+   id="defs11">
+		<rect
+   id="SVGID_3_"
+   width="398.66699"
+   height="253.33299"
+   x="0"
+   y="0" />
 	</defs>
-	<clipPath id="SVGID_10_">
-		<use xlink:href="#SVGID_9_"  overflow="visible"/>
-	</clipPath>
-	<path clip-path="url(#SVGID_10_)" d="M355.667,124.661c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5s0.672-1.5,1.5-1.5
-		S355.667,123.833,355.667,124.661"/>
-	<path clip-path="url(#SVGID_10_)" d="M391.694,239.261c0,0.828-0.672,1.5-1.5,1.5c-0.827,0-1.5-0.672-1.5-1.5s0.673-1.5,1.5-1.5
-		C391.022,237.761,391.694,238.433,391.694,239.261"/>
-	<path clip-path="url(#SVGID_10_)" d="M376.181,28.837c0,0.828-0.672,1.5-1.5,1.5s-1.5-0.672-1.5-1.5c0-0.828,0.672-1.5,1.5-1.5
-		S376.181,28.009,376.181,28.837"/>
-	
-		<line clip-path="url(#SVGID_10_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" x1="376.46" y1="22.872" x2="328.994" y2="243.433"/>
-	
-		<line clip-path="url(#SVGID_10_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" x1="374.681" y1="30.337" x2="390.194" y2="239.26"/>
-	
-		<line clip-path="url(#SVGID_10_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" x1="349.25" y1="108.927" x2="392.292" y2="243.96"/>
-	
-		<path clip-path="url(#SVGID_10_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="2,1" d="
-		M361.832,90.845c15.458,3.489,27.002,17.304,27.002,33.816c0,19.146-15.521,34.667-34.667,34.667c-2.371,0-4.687-0.237-6.925-0.691
-		"/>
-</g>
-<text transform="matrix(1 0 0 1 352.666 156.0938)" font-family="'ArialMT'" font-size="10">α</text>
-<text transform="matrix(1 0 0 1 359.4961 126.374)" font-family="'ArialMT'" font-size="10">β</text>
-<text transform="matrix(1 0 0 1 244.0762 215.3838)" font-family="'ArialMT'" font-size="10">ApexGP</text>
-<g>
-	<defs>
-		<rect id="SVGID_11_" width="398.667" height="253.333"/>
-	</defs>
-	<clipPath id="SVGID_12_">
-		<use xlink:href="#SVGID_11_"  overflow="visible"/>
+	<clipPath
+   id="SVGID_4_">
+		<use
+   xlink:href="#SVGID_3_"
+   overflow="visible"
+   id="use13" />
 	</clipPath>
 	
-		<path clip-path="url(#SVGID_12_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" d="
-		M204.477,172.055c6.714-4.536,14.54-7.554,22.982-8.557"/>
 	
-		<path clip-path="url(#SVGID_12_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" stroke-dasharray="4,2" d="
-		M195.846,139.525c7.46-3.756,15.55-6.444,24.07-7.863"/>
-</g>
-<text transform="matrix(1 0 0 1 236.4395 153.3066)" font-family="'ArialMT'" font-size="10">D1</text>
-<text transform="matrix(1 0 0 1 172.6694 159.167)" font-family="'ArialMT'" font-size="10">D2</text>
-<g>
-	<defs>
-		<rect id="SVGID_13_" width="398.667" height="253.333"/>
+	
+
+	<defs
+   id="defs73">
+		<rect
+   id="SVGID_7_"
+   width="398.66699"
+   height="253.33299"
+   x="0"
+   y="0" />
 	</defs>
-	<clipPath id="SVGID_14_">
-		<use xlink:href="#SVGID_13_"  overflow="visible"/>
+	<clipPath
+   id="SVGID_8_">
+		<use
+   xlink:href="#SVGID_7_"
+   overflow="visible"
+   id="use75" />
 	</clipPath>
 	
-		<line clip-path="url(#SVGID_14_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="223.598" y1="135.424" x2="239.167" y2="142.916"/>
-	<polygon clip-path="url(#SVGID_14_)" points="223.86,137.163 219.606,133.504 225.121,134.545 	"/>
+		
 	
-		<line clip-path="url(#SVGID_14_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="228.168" y1="162.021" x2="241.278" y2="155.666"/>
-	<polygon clip-path="url(#SVGID_14_)" points="229.693,162.896 224.183,163.953 228.427,160.282 	"/>
+		
 	
-		<line clip-path="url(#SVGID_14_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="204.621" y1="166.694" x2="184.666" y2="161.666"/>
-	<polygon clip-path="url(#SVGID_14_)" points="204.016,165.043 208.916,167.776 203.306,167.86 	"/>
+		
+
+	<defs
+   id="defs91">
+		<rect
+   id="SVGID_9_"
+   width="398.66699"
+   height="253.33299"
+   x="0"
+   y="0" />
+	</defs>
+	<clipPath
+   id="SVGID_10_">
+		<use
+   xlink:href="#SVGID_9_"
+   overflow="visible"
+   id="use93" />
+	</clipPath>
 	
-		<line clip-path="url(#SVGID_14_)" fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="199.383" y1="140.47" x2="181.417" y2="149.166"/>
-	<polygon clip-path="url(#SVGID_14_)" points="197.858,139.595 203.37,138.54 199.124,142.209 	"/>
+	
+	
+	
+		
+	
+		
+	
+		
+	
+		
+</defs><sodipodi:namedview
+   id="namedview165"
+   pagecolor="#505050"
+   bordercolor="#eeeeee"
+   borderopacity="1"
+   inkscape:showpageshadow="0"
+   inkscape:pageopacity="0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#505050"
+   showgrid="false"
+   inkscape:zoom="3.0351146"
+   inkscape:cx="171.16323"
+   inkscape:cy="121.90644"
+   inkscape:window-width="2560"
+   inkscape:window-height="1377"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="Layer_1" />
+<g
+   id="g8"
+   transform="translate(0,-4.9421528)">
+	<defs
+   id="defs3">
+		<rect
+   id="SVGID_1_"
+   x="149.666"
+   y="48.612999"
+   width="249"
+   height="204.72" />
+	</defs>
+	<clipPath
+   id="SVGID_2_">
+		<use
+   xlink:href="#SVGID_1_"
+   overflow="visible"
+   id="use5" />
+	</clipPath>
 </g>
-<text transform="matrix(1 0 0 1 354.167 83.917)" font-family="'ArialMT'" font-size="10">A</text>
-<text transform="matrix(1 0 0 1 386.917 157.167)" font-family="'ArialMT'" font-size="10">B</text>
-<text transform="matrix(1 0 0 1 358.417 174.667)" font-family="'ArialMT'" font-size="10">C</text>
+
+
+
+
+
+
+
+
+
+
+
+<g
+   id="g1904"
+   transform="translate(0,-4.9421528)"><path
+     clip-path="url(#SVGID_4_)"
+     fill="#d1d3d4"
+     d="m 52.333,20.41 c 0.051,9.672 -17.525,91.702 -14.371,103.92 -2.912,27.471 35.649,108.003 35.649,108.003 0,0 -25.161,-70.724 -25.685,-100.727 C 49.856,87.829 64.333,22 64.333,22"
+     id="path16" /><path
+     clip-path="url(#SVGID_4_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.25"
+     stroke-miterlimit="10"
+     d="m 52.333,20.41 c 0.051,9.672 -17.525,91.702 -14.371,103.92 -2.912,27.471 35.649,108.003 35.649,108.003 0,0 -25.161,-70.724 -25.685,-100.727 C 49.856,87.829 64.333,22 64.333,22"
+     id="path18" /><path
+     clip-path="url(#SVGID_4_)"
+     fill="none"
+     stroke="#000000"
+     stroke-miterlimit="10"
+     d="M 33,20.41 C 33,32 21.333,89.667 20,103.667 c -1.333,14 0.333,28 6,47.667 5.667,19.667 36.3,81 46.15,81 9.85,0 -2.817,-28 -3.817,-38 -1,-10 -12.008,-50.334 -12.008,-72.667 C 56.325,103 73.333,27.153 80.667,20.41"
+     id="path20" /><text
+     transform="translate(44.4165,18.6597)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text24">4</text><text
+     transform="translate(27.8364,122.0898)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text28">3</text><path
+     clip-path="url(#SVGID_6_)"
+     d="m 39.083,117.733 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path46" /><path
+     clip-path="url(#SVGID_6_)"
+     d="m 75.111,232.333 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path48" /><path
+     clip-path="url(#SVGID_6_)"
+     d="m 66.667,210.666 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path52" /><path
+     clip-path="url(#SVGID_6_)"
+     d="m 59.598,21.91 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.827,0 1.5,0.672 1.5,1.5"
+     id="path62" /><text
+     transform="translate(76.8335,236.583)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text66">1</text><text
+     transform="translate(56.5938,213.8828)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text68">2</text><line
+     clip-path="url(#SVGID_8_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="4, 2"
+     x1="60.729"
+     y1="11.984"
+     x2="13.873"
+     y2="229.711"
+     id="line78" /><line
+     clip-path="url(#SVGID_8_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="4, 2"
+     x1="37.583"
+     y1="117.733"
+     x2="65.167"
+     y2="210.666"
+     id="line80" /><path
+     clip-path="url(#SVGID_8_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="2, 1"
+     d="m 45.249,83.917 c 15.458,3.489 27.002,17.304 27.002,33.816 0,19.146 -15.521,34.667 -34.667,34.667 -2.371,0 -4.687,-0.237 -6.925,-0.691"
+     id="path82" /><text
+     transform="translate(36.0835,149.167)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text86">α</text><text
+     transform="translate(63.6636,123.3364)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text88">β</text></g>
+
+
+
+
+
+
+
+
+
+
+<g
+   id="g1886"
+   transform="translate(-201.31036,-13.838028)"><text
+     transform="translate(366.166,28.8398)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text26">4</text><text
+     transform="translate(345.8369,127.6699)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text30">3</text><text
+     transform="translate(382.4336,241.8828)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text70">2</text><path
+     clip-path="url(#SVGID_10_)"
+     d="m 355.667,124.661 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path96" /><path
+     clip-path="url(#SVGID_10_)"
+     d="m 391.694,239.261 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.827,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.673,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path98" /><path
+     clip-path="url(#SVGID_10_)"
+     d="m 376.181,28.837 c 0,0.828 -0.672,1.5 -1.5,1.5 -0.828,0 -1.5,-0.672 -1.5,-1.5 0,-0.828 0.672,-1.5 1.5,-1.5 0.828,0 1.5,0.672 1.5,1.5"
+     id="path100" /><line
+     clip-path="url(#SVGID_10_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="4, 2"
+     x1="376.45999"
+     y1="22.872"
+     x2="328.99399"
+     y2="243.433"
+     id="line102" /><line
+     clip-path="url(#SVGID_10_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="4, 2"
+     x1="374.681"
+     y1="30.337"
+     x2="390.194"
+     y2="239.25999"
+     id="line104" /><line
+     clip-path="url(#SVGID_10_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="4, 2"
+     x1="349.25"
+     y1="108.927"
+     x2="392.29199"
+     y2="243.96001"
+     id="line106" /><path
+     clip-path="url(#SVGID_10_)"
+     fill="none"
+     stroke="#000000"
+     stroke-width="0.5"
+     stroke-miterlimit="10"
+     stroke-dasharray="2, 1"
+     d="m 361.832,90.845 c 15.458,3.489 27.002,17.304 27.002,33.816 0,19.146 -15.521,34.667 -34.667,34.667 -2.371,0 -4.687,-0.237 -6.925,-0.691"
+     id="path108" /><text
+     transform="translate(352.666,156.0938)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text112">α</text><text
+     transform="translate(359.4961,126.374)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text114">β</text><text
+     transform="translate(354.167,83.917)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text158">A</text><text
+     transform="translate(386.917,157.167)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text160">B</text><text
+     transform="translate(358.417,174.667)"
+     font-family="ArialMT"
+     font-size="10px"
+     id="text162">C</text></g>
 </svg>
