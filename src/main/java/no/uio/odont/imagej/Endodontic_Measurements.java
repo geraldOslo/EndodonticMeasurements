@@ -95,6 +95,11 @@ import ij.measure.*;
 import java.util.*;
 import java.text.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileLock;
+
 
 public class Endodontic_Measurements extends PlugInFrame implements ActionListener {
 
@@ -389,35 +394,77 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	   measurements on next tooth
 	*/
 	private void registerRootAndReset() {
-		
-		// Check that resulfile is not locket and root is identified:
-		File f = new File(getRootDirectory() + resultFileName);			
-		if (!f.canWrite()) {
-			instance.setAlwaysOnTop(false);
-			IJ.error("Cannot write to result file, please check if the file is open in another program");
-			instance.setAlwaysOnTop(true);
-			return;
-		} else if (!root.isIdentified()) {
-			instance.setAlwaysOnTop(false);
-			IJ.error("Error", "You have to identify object (select quadrant- tooth- and root number) before saving");
-			instance.setAlwaysOnTop(true);
-			return;
-		}
-	
-		root.removeArcs();
-	
-		// write line to file
-		root.burnInSites();
 
-		// Create result string:
-		String result = getDirectoryAndFile() + ";" + timeStamp() + "; " + root.toString() + qualitativeObservations() + getCoordinates() + "; " + comments.getText();
-			
-		// Write to file and reset
-		dM("Writing data to file: " + getRootDirectory() + resultFileName);
-		IJ.append(result, getRootDirectory() + resultFileName); 
-		resetGUI();
-		root = null;
+	    // Check if resultfile exists and if JVM has write permissions and if file is not locked:
+	    File f = new File(getRootDirectory() + resultFileName);
+	    RandomAccessFile raf = null;
+
+	    // Check if the file exists, if not create it
+	    if (!f.exists()) {
+	        try {
+	            // Make sure the directory exists
+	            File directory = f.getParentFile();
+	            if (!directory.exists()) {
+	                if (!directory.mkdirs()) {
+	                    instance.setAlwaysOnTop(false);
+	                    IJ.error("Cannot create directory for result file");
+	                    instance.setAlwaysOnTop(true);
+	                    return;
+	                }
+	            }
+
+	            // Now, create the file
+	            if (!f.createNewFile()) {
+	                instance.setAlwaysOnTop(false);
+	                IJ.error("Cannot create result file");
+	                instance.setAlwaysOnTop(true);
+	                return;
+	            }
+	        } catch (IOException e) {
+	            instance.setAlwaysOnTop(false);
+	            IJ.error("Cannot create result file, error occurred when attempting to create file");
+	            instance.setAlwaysOnTop(true);
+	            return;
+	        }
+	    }
+
+	    // Check if JVM has write permissions
+	    if (!f.canWrite()) {
+	        instance.setAlwaysOnTop(false);
+	        IJ.error("Cannot write to result file, JVM does not have write permissions");
+	        instance.setAlwaysOnTop(true);
+	        return;
+	    }
+
+	    // Check if the file is locked
+	    try {
+	        raf = new RandomAccessFile(f, "rw");
+	        FileLock fl = raf.getChannel().tryLock();
+	        if (fl == null) {
+	            instance.setAlwaysOnTop(false);
+	            IJ.error("Cannot write to result file, file is open in another program");
+	            instance.setAlwaysOnTop(true);
+	            return;
+	        }
+	        fl.release();
+	    } catch (Exception e) {
+	        instance.setAlwaysOnTop(false);
+	        IJ.error("Cannot write to result file, error occurred when attempting to lock file");
+	        instance.setAlwaysOnTop(true);
+	        return;
+	    } finally {
+	        if (raf != null) {
+	            try {
+	                raf.close();
+	            } catch (IOException e) {
+	                // handle error if necessary
+	            }
+	        }
+	    }
+
+	    // Continue with the rest of the code if the file is accessible...
 	}
+
 	
 	
 	/* Generates the line of coordinates, has to be hardcoded
