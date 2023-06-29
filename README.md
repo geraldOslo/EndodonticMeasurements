@@ -7,17 +7,13 @@ But now I try to do it the right way, using Maven, Git, Eclipse for maintaining 
 
 # Problem
 When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. 
-I would be so happy if anybody could give me some advice on that
 
 Class not found while attempting to run "Endodontic_measurements"
 java.lang.NoClassDefFoundError: Endodontic_measurements (wrong name: no/uio/odont/imagej/ Endodontic_measurements)
 
-I think this is because of the definition in the prom file:
-<properties>
-	<package-name>no.uio.odont.imagej</package-name>                   
-	<main-class>no.uio.odont.imagej.Endodontic_Measurements</main-class>        
-	<license.licenseName>CC BY 4.0</license.licenseName>                      
-	<license.copyrightOwners>Faculty of dentistry, University of Oslo</license.copyrightOwners> </properties>
+## Workaround:
+comment out the line: package no.uio.odont.imagej;
+Then compile it using the Plugins>Compile_and_Run... method of ImageJ. (Thank you for the tip Philippe CARL)
 
 # Purpose of the file:
 The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file.
