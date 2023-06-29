@@ -65,26 +65,15 @@ is not very beautiful.
 ***********************************************************************************************************************************
 License and disclaimers:
 Endodontic Measurements plugin
-Copyright (C) 2022  Gerald Torgersen
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as published by
-	the Free Software Foundation.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Copyright (C) 2023  Gerald Torgersen
+Creative Commons Attribution 4.0 International Public License: https://creativecommons.org/licenses/by/4.0/legalcode 
 ***********************************************************************************************************************************	
 Programmed by Gerald R. Torgersen <gerald@odont.uio.no>
 Faculty of dentistry, University of Oslo, Norway
 
 Version 1.3 2022.02.01
 - plugin checks now if resultfile is locked for writing
-Version 1.99
+Version 1.99 2023.06.29
 - Plugin is now Maven project and repostory in GitHub - but does not work anymore
 **********************************************************************************************************************************/
 

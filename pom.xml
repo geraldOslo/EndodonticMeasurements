@@ -14,18 +14,18 @@
 
 	<groupId>no.uio.odont</groupId>        
 	<artifactId>Endodontic_Measurements</artifactId> 
-	<version>1.3-SNAPSHOT</version>
+	<version>1.99</version>
 
 	<name>Endodontic measurements</name>                                               
 	<description>A plugin to mark landmarks and endodontic observations on radiographs.</description> 
-	<url></url>                   <!-- FIXME: Your project website here       -->
-	<inceptionYear>2014</inceptionYear>                                        <!-- FIXME: Your project starting year here -->
+	<url>https://github.com/geraldOslo/EndodonticMeasurements</url>                   
+	<inceptionYear>2014</inceptionYear>                                        
 	<organization>
 		<name>Faculty of dentistry, University of Oslo</name>           
 		<url>>https://www.odont.uio.no</url> 
 	</organization>
 	<licenses>
-		<license>                         <!-- FIXME: Your license here -->
+		<license>                         
 			<name>Attribution 4.0 International (CC BY 4.0)</name>
 			<url>https://creativecommons.org/licenses/by/4.0/</url>
 			<distribution>repo</distribution>
@@ -35,9 +35,9 @@
 	<developers>
 		<!-- See https://imagej.net/Team -->
 		<developer>
-			<id>gerald</id>                                          <!-- FIXME: Your GitHub handle here -->
-			<name>Gerald Torgersen</name>                            <!-- FIXME: Your name here          -->
-			<url>https://www.odont.uio.no/iko/english/people/aca/gerald</url> <!-- FIXME: Your website here       -->
+			<id>geraldOslo</id>                                          
+			<name>Gerald Torgersen</name>                            
+			<url>https://www.odont.uio.no/iko/english/people/aca/gerald</url> 
 			<roles>
 				<role>developer</role>
 				<role>debugger</role>
@@ -59,14 +59,14 @@
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:https://github.com/imagej/example-imagej2-command</connection>
-		<developerConnection>scm:git:git@github.com:imagej/example-imagej2-command</developerConnection>
+		<connection>scm:git:https://github.com/geraldOslo/EndodonticMeasurements</connection>
+		<developerConnection>scm:git:https://github.com/geraldOslo/EndodonticMeasurements</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/imagej/example-imagej2-command</url>
+		<url>https://github.com/geraldOslo/EndodonticMeasurements</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/imagej/example-imagej2-command/issues</url>
+		<url>https://github.com/geraldOslo/EndodonticMeasurements/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>None</system>
