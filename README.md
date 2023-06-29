@@ -20,9 +20,8 @@ I think this is because of the definition in the prom file:
 	<license.copyrightOwners>Faculty of dentistry, University of Oslo</license.copyrightOwners> </properties>
 
 # Purpose of the file:
-The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file. I will add a better description when I get the program to work.
+The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file.
 
-Now it does not work anymore ...
 
 # Instructions for use
 Introduction
@@ -95,7 +94,7 @@ The distance between the apex and the AGP carries a sign depending on if there i
 
 ### Distances
 Distances d are calculated from the calibrated coordinates by the Pythagorean formula
-$$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+$$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
 
 ### The Schneider angle
 
