@@ -74,6 +74,8 @@ Sites  4 and 5 are defined to obtain the Schneider angle (Schneider 1971) togeth
 
 ## Calculations
 The coordinate data are imported to a spreadsheet for calculation of distances and angles|
+$$\sqrt{(x_2 - x_1)^2}$$
+
 
 Table 2: Quantities calculated
 |Quantity to calculate |Points involved|
