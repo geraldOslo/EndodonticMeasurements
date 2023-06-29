@@ -60,7 +60,7 @@ Table 1: Sites registered
         <td><img src="/figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="500"/></td>
     </tr>
     <tr>
-        <td colspan="2" style="text-align:center">Figure 1: a) The sites b) The circle to place the root canal diameter</td>
+        <td colspan="2" style="text-align:center">Figure 1: The sites (a) and the circle to place the root canal diameter (b)</td>
     </tr>
 </table>
 
@@ -69,7 +69,7 @@ Sites  4 and 5 are defined to obtain the Schneider angle (Schneider 1971) togeth
 
 <table>
     <tr><img src="/figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="800"/></tr>
-    <tr>Figure 2: a) The Scneider angle b) The trigonometrics</tr>
+    <tr>Figure 2: The Scneider angle (a) and the trigonometrics (b)</tr>
 </table>
 
 ## Calculations
@@ -92,6 +92,10 @@ The distance between the apex and the AGP carries a sign depending on if there i
     <tr><img src="/figures/EndodonticRoot_d.svg" alt="Figure 3" width="800"/></tr>
     <tr>Figure 3: Deficit (a) and surplus (b) of filling material</tr>
 </table>
+
+### Distances
+Distances d are calculated from the calibrated coordinates by the Pythagorean formula
+\frac{1}{\sqrt{x}}
 
 # References
 Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: 10.1111/iej.13669.
