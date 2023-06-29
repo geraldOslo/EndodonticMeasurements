@@ -99,10 +99,36 @@ The distance between the apex and the AGP carries a sign depending on if there i
 Distances d are calculated from the calibrated coordinates by the Pythagorean formula
 $$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
 
-###The Schneider angle
+### The Schneider angle
 
 Figure 2b shows the sites and lines extracted from Figure 2a. A line is drawn between sites 4 and 2 to define a triangle. The distances A, B and C are defined as shown in the figure. Using the law of cosines the angle $\beta$ can be calculated using the law cosines yielding
-$$\beta = \cos{-1}(\frac{A^2}{2AC})$$
+$$\beta = \cos^{-1}(\frac{A^2 + C^2 - B^2}{2AC})$$
+
+The Schneider angle $\alpha$ can be obtained by the observation
+$$\alpha = 180\degree - \beta$$ 
+
+## The qualitative observations
+In addition to the site coordinates up to 14 qualitative observations may be stored. 
+
+Table 3: Qualitative observations stored (NS for not scored)
+|Quality | Observations|
+|-------------|-----------------------------------------|
+|Periapical index (PAI) | NS, 1 - 5|
+|Apical voids | NS, No, Yes|
+|Coronal voids | NS, No, Yes|
+|Orifice plug | NS, No, Yes|
+|Apical file fracture | NS, No, Yes|
+|Coronal file fracture | NS, No, Yes|
+|Apical perforation | NS, No, Yes|
+|Coronal perforation | NS, No, Yes|
+|Post | NS, No, Yes|
+|Restoration gap | NS, No, Yes|
+|Caries | NS, None, Dentine, Pulp space|
+|Restoration | NS, None, Filling, Crown/bridge|
+|Support/load | NS, Two appr, One appr, No appr, Bridge abutment|
+|Comments | Free text one line|
+
+("Two  approximal supports", "One approximal support " and "No approximal support")
 
 # References
 Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: 10.1111/iej.13669.
