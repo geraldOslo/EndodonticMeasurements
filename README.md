@@ -121,6 +121,7 @@ Table 3: Qualitative observations stored (NS for not scored)
 	One line per root and measurement added to the bottom of the csv if existing.
 
 Format:
+```
 <path and filename>;<timestamp>;<operator>;<image type>;<EXIF-unit>;  
 <quadrant number>, <tooth number>, <root number>, 
 <apical voids (NS, N, Y)>, <coronal voids (NS, N, Y)>, <orifise plug (NS, N, Y)>, 
@@ -133,6 +134,7 @@ order: apex, apex GP, root canal deviation, canal entrance c.,
 Lesion periphery, Lesion side M, Lesion side D, 
 Bone level M, Bone level D,  CEJ M, CEJ D,
 canal side M 1 mm, canal side D 1 mm,  canal side M 4mm, canal side D 4 mm, >
+```
 
 ## The configuration file
 The plugin is configured by an optional config file: Endodontic_Measurements.cfg in the same folder as the plugin:
