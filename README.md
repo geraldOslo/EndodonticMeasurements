@@ -1,19 +1,8 @@
-This is an example Maven project implementing my Endotontic_Measurements plugin for ImagJ.
+This is plain old ImageJ version of the plugin with updates. I never got the Maven version to work, so I gave ut that approach.
 
 I have a working version of this Plugin, and it has already been used in some research:<br>
 Jordal, K et al. (2021) [1].
 
-But now I try to do it the right way, using Maven, Git, Eclipse for maintaining the plugin. Sadly there is something wrong.
-
-# Problem
-When I run the EndoStarter.java for testing the Plugin I get a Class not found error. But the Class-file is in the target folder. 
-
-Class not found while attempting to run "Endodontic_measurements"
-java.lang.NoClassDefFoundError: Endodontic_measurements (wrong name: no/uio/odont/imagej/ Endodontic_measurements)
-
-## Workaround:
-comment out the line: package no.uio.odont.imagej;
-Then compile it using the Plugins>Compile_and_Run... method of ImageJ. (Thank you for the tip Philippe CARL)
 
 # Purpose of the file:
 The Plugin is used to mark landmarks as apex and stores the coordinates in a csv file for further analysis. There are also radiobuttons and free text fields for qualitative observations as PAI stored to the same csv-file.
@@ -22,8 +11,9 @@ The Plugin is used to mark landmarks as apex and stores the coordinates in a csv
 # Instructions for use
 Introduction
 Repeated measurements of sites, distances and angles for the evaluation of the outcome of endodontic treatment can be time consuming and error prone. We provide a tool which allows the observer to concentrate on locating the correct point of the site and store the coordinates by mouse clicks.
-The plugin is an extension of the free and open source image processing and analyzing package ImageJ1. It is written in the Java language and the source code is distributed under the GPL license v. 32. The plugin is based on a similar plugin used to measure periodontal attachment level loss (ref to come).
+The plugin is an extension of the free and open source image processing and analyzing package ImageJ1. It is written in the Java language and the source code is distributed under the Creative Commons Attribution 4.0 International Public License. The plugin is based on a similar plugin used to measure periodontal attachment level loss (ref to come).
 With the plugin a spreadsheet for calculation of distances and angles is available.
+Copy the entire Endodontic_Measurements to the plugins folder of your ImageJ installation.
 
 ## The sites
 

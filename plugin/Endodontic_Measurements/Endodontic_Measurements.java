@@ -39,13 +39,24 @@ The qualitative observations are:
 		
 Where Y=yes, N = no, NS = not scored
 ***********************************************************************************************************************************
+The plugin is configured by an optional config file: Endodontic_Measurements.cfg in the same folder as the plugin:
+operator:<operator name/ID> if missing: login user ID
+decimal-separator:./, if missing uses system default
+measurement_store:top/local if missing uses top storage
+save_scored_image_copy:true/false if missing true
+
+
 Output:
 1) Copy of image file with measure sites and lines burnt in, 
    file name: Measured-<timestamp>-<original filename>.tif
 
-2) Resultfile in same diretory as imagefiles with one line per tooth,
- format:
-<folder name/imagefilename>;<timestamp>;<EXIF-unit>;  
+2) Resultfile in stored in:
+	- if top mode choosen: Measurements.csv stored in directory over image directory
+	- if local choosen: <image-filename without extension>-measurements.csv in same folder as image file
+	One line per root and measurement added to the bottom of the csv if existing.
+
+Format:
+<path and filename>;<timestamp>;<operator>;<image type>;<EXIF-unit>;  
 <quadrant number>, <tooth number>, <root number>, 
 <apical voids (NS, N, Y)>, <coronal voids (NS, N, Y)>, <orifise plug (NS, N, Y)>, 
 <Apical file fracture (NS, N, Y)>, <Coronal file fracture (NS, N, Y)>, 
@@ -65,19 +76,15 @@ is not very beautiful.
 ***********************************************************************************************************************************
 License and disclaimers:
 Endodontic Measurements plugin
-Copyright (C) 2023  Gerald Torgersen
+Copyright (C) 2024  Gerald Torgersen
 Creative Commons Attribution 4.0 International Public License: https://creativecommons.org/licenses/by/4.0/legalcode 
 ***********************************************************************************************************************************	
 Programmed by Gerald R. Torgersen <gerald@odont.uio.no>
 Faculty of dentistry, University of Oslo, Norway
 
-Version 1.3 2022.02.01
-- plugin checks now if resultfile is locked for writing
-Version 1.99 2023.06.29
-- Plugin is now Maven project and repostory in GitHub - but does not work anymore
+Version 1.5 2024.06.05
 **********************************************************************************************************************************/
 
-package no.uio.odont.imagej;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -91,7 +98,6 @@ import ij.gui.*;
 import javax.swing.*;
 
 import ij.io .*;
-import ij.measure.*;
 import java.util.*;
 import java.text.*;
 
@@ -100,15 +106,18 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class Endodontic_Measurements extends PlugInFrame implements ActionListener {
 
-	private final boolean debug = true; // Shows debug messages when set
+	private final boolean debug = false; // Shows debug messages when set
 
-	Panel panel;
+	JPanel panel;
 	ImagePlus imp;
 	Frame instance;
-	ButtonGroup qNumber, tNumber, rNumber, pAI;
+	ButtonGroup qNumber, tNumber, rNumber, iType, pAI;
 	ButtonGroup [] qualitativeYNOptionsButtonG, qualitativeOtherOptionsButtonG; 
 	ButtonGroup [] singleSitesButtonG;
 	ButtonGroup [][] MDSitesButtonG;
@@ -126,15 +135,22 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	final String [] commands = {"Save canal data", "Save and close"};
 	final String [][] colorNames = {{"0xFF0000", "0xFF9999"}, {"0xFF8000", "0xFFCC99"}, {"0xFFFF00", "0xFFFFCC"}, {"0x00FF00", "0xCCFFCC"}, {"0x00FFFF", "0xCCFFFF"}, {"0x0000FF", "0x9999FF"}, {"0xFF00FF", "0xFFCCFF"}, {"0x660000", "0x990000"}, {"0x006600", "0x00CC00"}, {"0x663399", "0xCC99FF"}}; 
 	final Color [][] colors = new Color[2][colorNames.length]; 
+	final String [] rootNames = {"1", "B", "L", "M", "D", "MB", "ML", "DB", "DL", "X"};
+	final String [] imageTypes = {"Preop", "Compl", "Ctrl", "Other"};
+
 
 	final String resultFileName = "MeasurementResults.csv";
 
 	int numberOfSingleSites, numberOfMDSites;
 
+	// Configerations
+	String operator;
+	String measurementStore; // top or local
+	String imageType; 
+	char decimalFormatSymbol;
+	boolean saveScoredCopy;
 	String fileSeparator;
 
-	private final char decimalFormatSymbol = ','; // Has to be changed in other regions
-	
 	Root root;
 
 	Color background;
@@ -152,102 +168,101 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			}
 	}
 			
-
 	public void run(String arg) {
-		try{
-			if (arg.equals("about"))
-					{showAbout(); return;}
-			
+		try {
+			if (arg.equals("about")) {
+				showAbout();
+				return;
+			}
+
+			configApp();
+	
 			instance = this;
-			instance.setAlwaysOnTop(true); 
-
-			
-
-			background = getBackground(); //new Color(240, 240, 240);
+			instance.setAlwaysOnTop(true);
+	
+			background = getBackground();
 			instance.setBackground(background);
 			imp = WindowManager.getCurrentImage();
-			if (imp==null) {
-					IJ.beep();
-					IJ.noImage();
-					return;
+			if (imp == null) {
+				IJ.beep();
+				IJ.noImage();
+				return;
 			}
-			
+	
 			fileSeparator = Prefs.getFileSeparator();
-			
-			ImageConverter ic = new ImageConverter(imp);
-			ic.convertToRGB();
-
-			
+	
+			ImageConverter ic = new ImageConverter(imp);;
+	
 			numberOfSingleSites = singleSitesNames.length;
 			numberOfMDSites = MDSitesNames.length;
-
-			
+	
 			// Set colors
 			for (int i = 0; i < colorNames.length; i++) {
-					colors[0][i] = Color.decode(colorNames[i][0]);
-					colors[1][i] = Color.decode(colorNames[i][1]);
-			}		  
-			
-			addMenu();
-			panel = new Panel(new GridBagLayout());
-			panel.setBackground(background);
+				colors[0][i] = Color.decode(colorNames[i][0]);
+				colors[1][i] = Color.decode(colorNames[i][1]);
+			}
 
-			
+	
+			addMenu();
+			panel = new JPanel(new GridBagLayout());
+			panel.setBackground(background);
+	
 			// Panel layout:
 			GridBagConstraints c = new GridBagConstraints();
-			c.fill = java.awt.GridBagConstraints.BOTH;
+			c.fill = GridBagConstraints.HORIZONTAL;
 			c.anchor = GridBagConstraints.NORTHWEST;
 			c.gridx = 0;
 			c.gridy = 0;
-			c.gridwidth = 1;
-
-			//c.weightx = 1.0;
-
-
+			c.weightx = 1.0;
+	
 			JPanel selectorPanel = makeSelectorPanel();
 			panel.add(selectorPanel, c);
-
-			//c.fill = java.awt.GridBagConstraints.HORIZONTAL;
+	
 			c.gridy++;
-			//c.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			panel.add(addSitesPanel(), c);
+			c.weightx = 0; 
+			c.weighty = 1.0; 
+			panel.add(addSingleSitesPanel(), c);
 
 			c.gridy++;
-			//c.fill = java.awt.GridBagConstraints.NONE;
-			//c.anchor = GridBagConstraints.NORTHWEST;
+			panel.add(addMDSitesPanel(), c);
+	
+			c.gridy++;
 			panel.add(makeQualitativeYNOptionsPanel(qualitativeYNObservations), c);
-
+	
 			c.gridy++;
 			panel.add(makeQualitativeOtherOptionsPanel(qualitativeOtherObservations), c);
-
+	
 			c.gridy++;
+			c.weighty = 1.0;
 			panel.add(makeCommentLine(), c);
-			
-			c.gridx = 0;
-			//c.gridwidth = 1;
-			for (int i = 0; i < commands.length; i ++) {
-				c.gridy++;
-				Button b = new Button(commands[i]);
+	
+			c.gridy++;
+			c.weighty = 0.0;
+			c.fill = GridBagConstraints.NONE;
+			c.anchor = GridBagConstraints.CENTER;
+			JPanel buttonPanel = new JPanel(new FlowLayout());
+			for (int i = 0; i < commands.length; i++) {
+				JButton b = new JButton(commands[i]);
 				b.setActionCommand(commands[i]);
 				b.addActionListener(this);
-				panel.add(b, c);
+				buttonPanel.add(b);
 			}
-			
-			//Place plugin on the right top side of picture window, slightly overlapping
-			Window pictureWindow = imp.getWindow();
-			Point loc = pictureWindow.getLocation();
-			loc.x = (int)(loc.x + pictureWindow.getWidth()*0.9);
-			this.setLocation(loc); 
-			
-			
-			
-			add(panel);
+			panel.add(buttonPanel, c);
+	
+			// Add the panel to a scroll pane
+			JScrollPane scrollPane = new JScrollPane(panel);
+			scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	
+			// Add the scroll pane to the frame
+			add(scrollPane);
 			pack();
 			setVisible(true);
 			IJ.setTool("point");
 			Roi.setColor(Color.blue);
-		} catch (Exception ex) {IJ.log(ex.toString());}
-
+		} catch (Exception ex) {
+			IJ.log(ex.toString());
+		}
 	}
 
 
@@ -285,7 +300,12 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			command = e.getActionCommand(); 
 			
 			dM("Command: " + command);
-	
+			// Check if the root object is null
+			if (root == null) {
+				dM("The root object is null.");
+			} else {
+				dM("The root object is not null.");
+}
 			// Sites:
 			for (int i = 0; i < numberOfSingleSites; i++) {
 					if (command.equals(singleSitesNames[i])) {
@@ -311,15 +331,20 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 				root.removeIfExist(command.substring(8));
 
 			// Qualitative observations:
-			if (command.startsWith("QO_")) 
+			else if (command.startsWith("QO_")) 
 				setQualitativeObservation(command);		
 
 			// Quadrant- tooth- or rootnumber changed:
-			if (command.startsWith("QTR_")) 
+			else if (command.startsWith("QTR_")) 
 				setQuadrantTeethRootNumber(command);
 			
+			// Image type choosen:
+			else if (command.startsWith("ImageType")) {
+				imageType = command.substring(command.lastIndexOf(';') + 1);
+				dM(imageType);
+			}
 			// Save root/save and exit
-			if (command.equals(commands[0])) {
+			else if (command.equals(commands[0])) {
 					// next root
 				if (root != null) 
 					registerRootAndReset();
@@ -330,18 +355,24 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 					// write root to file if not done:
 				if (root != null) 
 						registerRootAndReset();
-				dM("Saving image copy with sites to: " + getWorkingDirectory() + "Measured_" + timeStamp() + "-" + getStrippedFileName() + ".tif");
-				IJ.saveAs(imp, "tif", getWorkingDirectory() + "Measured_" + timeStamp() + "-" + getStrippedFileName());
+
+				if (saveScoredCopy) {
+					dM("Saving image copy with sites to: " + getWorkingDirectory() + "Measured_" + timeStamp() + "-" + getStrippedFileName() + ".tif");
+					IJ.saveAs(imp, "tif", getWorkingDirectory() + "Measured_" + timeStamp() + "-" + getStrippedFileName());
+				}
+
 				// close program and file:
 				imp.close(); // close picture
 				close();
 			}
 
-
-			// XXX- add actions for menu and help
 			
 			imp.updateAndDraw();
-			
+
+			// activate menus if quadrant, tooth, root and image_type selected
+			if (imageType != null && root.isIdentified())
+				activateAllMenus(true);
+				comments.setEnabled(true);
 			
 	}
 
@@ -369,7 +400,6 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			root.setToothNumber(command.substring(command.lastIndexOf(';') + 1));
 		else if (command.startsWith("QTR_rNumber"))
 			root.setRootName(command.substring(command.lastIndexOf(';') + 1));
-//XXX
 					
 	}
 
@@ -377,11 +407,15 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	// Create root object if root = null
 	private void updateOrCreateRoot() {
 			dM("updateOrCreateRoot called");
-			if (root == null) 
-					root = new Root(imp, decimalFormatSymbol);
+			if (root == null) {
+				dM("Creating new root");
+				root = new Root(imp, decimalFormatSymbol, debug);
+			}
 			dM("" + root.isIdentified());
 			
 	}
+
+
 
 
 
@@ -394,77 +428,101 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	   measurements on next tooth
 	*/
 	private void registerRootAndReset() {
+		dM("registerRootAndReset");
+		Path filePath = null;
+	
+		dM("Store: " + measurementStore);
+		if (measurementStore.equals("top")) {
+			// Building the file path for the "top" store using Paths
+			Path rootDirectory = Paths.get(getRootDirectory());
+			filePath = rootDirectory.resolve(resultFileName);
+		} else if (measurementStore.equals("local")) {
+			// Building the file path for the "local" store with a stripped file name
+			Path workingDirectory = Paths.get(getWorkingDirectory());
+			String csvFileName = getStrippedFileName() + "-measurements.csv";
+			filePath = workingDirectory.resolve(csvFileName);
 
-	    // Check if resultfile exists and if JVM has write permissions and if file is not locked:
-	    File f = new File(getRootDirectory() + resultFileName);
-	    RandomAccessFile raf = null;
-
-	    // Check if the file exists, if not create it
-	    if (!f.exists()) {
-	        try {
-	            // Make sure the directory exists
-	            File directory = f.getParentFile();
-	            if (!directory.exists()) {
-	                if (!directory.mkdirs()) {
-	                    instance.setAlwaysOnTop(false);
-	                    IJ.error("Cannot create directory for result file");
-	                    instance.setAlwaysOnTop(true);
-	                    return;
-	                }
-	            }
-
-	            // Now, create the file
-	            if (!f.createNewFile()) {
-	                instance.setAlwaysOnTop(false);
-	                IJ.error("Cannot create result file");
-	                instance.setAlwaysOnTop(true);
-	                return;
-	            }
-	        } catch (IOException e) {
-	            instance.setAlwaysOnTop(false);
-	            IJ.error("Cannot create result file, error occurred when attempting to create file");
-	            instance.setAlwaysOnTop(true);
-	            return;
-	        }
-	    }
-
-	    // Check if JVM has write permissions
-	    if (!f.canWrite()) {
-	        instance.setAlwaysOnTop(false);
-	        IJ.error("Cannot write to result file, JVM does not have write permissions");
-	        instance.setAlwaysOnTop(true);
-	        return;
-	    }
-
-	    // Check if the file is locked
-	    try {
-	        raf = new RandomAccessFile(f, "rw");
-	        FileLock fl = raf.getChannel().tryLock();
-	        if (fl == null) {
-	            instance.setAlwaysOnTop(false);
-	            IJ.error("Cannot write to result file, file is open in another program");
-	            instance.setAlwaysOnTop(true);
-	            return;
-	        }
-	        fl.release();
-	    } catch (Exception e) {
-	        instance.setAlwaysOnTop(false);
-	        IJ.error("Cannot write to result file, error occurred when attempting to lock file");
-	        instance.setAlwaysOnTop(true);
-	        return;
-	    } finally {
-	        if (raf != null) {
-	            try {
-	                raf.close();
-	            } catch (IOException e) {
-	                // handle error if necessary
-	            }
-	        }
-	    }
-
-	    // Continue with the rest of the code if the file is accessible...
+			dM("CSV File Path: " + filePath.toString());
+		}
+	
+		// Convert Path to a File object for compatibility with existing code
+		File f = filePath.toFile();
+		dM("File Name: " + f.getName());
+	
+		// Check if the file exists, if not, create it
+		if (!f.exists()) {
+			try {
+				// Ensure the parent directory exists
+				File directory = f.getParentFile();
+				if (!directory.exists() && !directory.mkdirs()) {
+					instance.setAlwaysOnTop(false);
+					IJ.error("Cannot create directory for result file");
+					instance.setAlwaysOnTop(true);
+					return;
+				}
+	
+				// Create the new file
+				if (!f.createNewFile()) {
+					instance.setAlwaysOnTop(false);
+					IJ.error("Cannot create result file");
+					instance.setAlwaysOnTop(true);
+					return;
+				}
+			} catch (IOException e) {
+				instance.setAlwaysOnTop(false);
+				IJ.error("Cannot create result file, error occurred while creating file");
+				instance.setAlwaysOnTop(true);
+				return;
+			}
+		}
+	
+		// Check if JVM has write permissions
+		if (!f.canWrite()) {
+			instance.setAlwaysOnTop(false);
+			IJ.error("Cannot write to result file, JVM does not have write permissions");
+			instance.setAlwaysOnTop(true);
+			return;
+		}
+	
+		// Check if the file is locked
+		try (RandomAccessFile raf = new RandomAccessFile(f, "rw")) {
+			FileLock fl = raf.getChannel().tryLock();
+			if (fl == null) {
+				instance.setAlwaysOnTop(false);
+				IJ.error("Cannot write to result file, file is open in another program");
+				instance.setAlwaysOnTop(true);
+				return;
+			}
+			fl.release();
+		} catch (Exception e) {
+			instance.setAlwaysOnTop(false);
+			IJ.error("Cannot write to result file, error occurred while attempting to lock file");
+			instance.setAlwaysOnTop(true);
+			return;
+		}
+	
+		if (root.isIdentified()) {
+			root.removeArcs();
+	
+			// Write line to the file
+			root.burnInSites();
+	
+			// Write information and coordinates to the result file
+			String result = getDirectoryAndFile() + ";" + timeStamp() + "; " + operator + "; " + imageType + ";" + root.toString() + qualitativeObservations() + getCoordinates() + "; " + comments.getText();
+			
+			// Write to the file using ImageJ's append function
+			dM("Writing data to file: " + filePath);
+			IJ.append(result, filePath.toString());
+	
+			resetGUI();
+	
+			root = null;
+		} else {
+			IJ.showMessageWithCancel("Error", "You have to identify object (select quadrant- tooth- and root number) before saving");
+		}
 	}
-
+	
+	
 	
 	
 	/* Generates the line of coordinates, has to be hardcoded
@@ -507,7 +565,6 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			return sB.toString();
 	}
 
-
 	
 
 	/*******************************************************************************************************************************
@@ -524,9 +581,10 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
    	 	c.gridy = 0;
 		c.fill = java.awt.GridBagConstraints.BOTH;
 		c.anchor = java.awt.GridBagConstraints.NORTHWEST;
-		p.add(new JLabel("Comments: "), c);
+		addLabel(p, "Comments:", c);
 		c.gridx = 1;
-		comments = new JTextField(45);
+		comments = new JTextField(30);
+		comments.setEnabled(false);
 		p.add(comments, c);
 		return p;
 	}
@@ -547,17 +605,15 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 		for (int i = 0; i < items.length; i++) {
 			qualitativeOtherOptionsButtonG[i] = new ButtonGroup();
 			c.gridx = 0;
-				p.add(new JLabel(items[i][0] + ": "), c);
+			addLabel(p, items[i][0] + ": ", c);
+				//p.add(new JLabel(items[i][0] + ": "), c);
 			for (int j = 1; j < items[i].length; j++) {
 				c.gridx = j;
-				//if (j == 5) {
-				//	c.gridy++;
-				//	c.gridx = 1;
-				//}
 				rb = new JRadioButton(items[i][j]);
 				rb.setActionCommand("QO_"+ items[i][0] + ";" + items[i][j]);
 				rb.addActionListener(this);
 				rb.setSelected(j == 1);
+				rb.setEnabled(false);
 				qualitativeOtherOptionsButtonG[i].add(rb);
 				p.add(rb, c);
 				
@@ -571,7 +627,6 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	private JPanel makeQualitativeYNOptionsPanel(String [] items) {
 		String [] options = {"NS", "N", "Y"};
 		JPanel p = new JPanel(new java.awt.GridBagLayout());
-		//p.setBackground(background);
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
    	 	c.gridy = 0;
@@ -583,12 +638,14 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 		qualitativeYNOptionsButtonG = new ButtonGroup[items.length];
 
 		// PAI:
-		p.add(new JLabel("PAI:"), c);
+		//p.add(new JLabel("PAI:"), c);
+		addLabel(p, "PAI: ", c);
 		c.gridx = 1;
 		rb = new JRadioButton("NS");
 		rb.setActionCommand("QO_pAi;NS");
 		rb.addActionListener(this);
 		rb.setSelected(true);
+		rb.setEnabled(false);
 		pAI.add(rb);
 		p.add(rb, c);
 		for (int i = 1; i <= 5; i++) {
@@ -596,6 +653,7 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			rb = new JRadioButton("" + i);
 			rb.setActionCommand("QO_pAi;" + i);
 			rb.addActionListener(this);
+			rb.setEnabled(false);
 			pAI.add(rb);
 			p.add(rb, c);
 		}
@@ -606,13 +664,15 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 			qualitativeYNOptionsButtonG[i] = new ButtonGroup();
 			//panel.add(makeQualitativeScorePanel(items[i] , "QO_" + items[i], options), c);
 			c.gridx = 0;
-				p.add(new JLabel(items[i] + ": "), c);
+			addLabel(p, items[i] + ": ", c);
+				//p.add(new JLabel(items[i] + ": "), c);
 			for (int j = 0; j < options.length; j++) {
 				c.gridx = j + 1;
 				rb = new JRadioButton(options[j]);
 				rb.setActionCommand("QO_"+ items[i] + ";" + options[j]);
 				rb.addActionListener(this);
 				rb.setSelected(j == 0);
+				rb.setEnabled(false);
 				qualitativeYNOptionsButtonG[i].add(rb);
 				p.add(rb, c);
 			}
@@ -621,182 +681,206 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 		return p;
 	}
 
-		   
-	public JPanel makeSelectorPanel() {
-		JPanel p = new JPanel(new GridBagLayout());
-		qNumber = new ButtonGroup(); 
-		tNumber = new ButtonGroup();
-		rNumber = new ButtonGroup();
-		JRadioButton rb;
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-   	 	c.gridy = 0;
-		c.fill = java.awt.GridBagConstraints.BOTH;
-		c.anchor = java.awt.GridBagConstraints.WEST;
-		p.add(new JLabel("Quadrant number:"), c);
-		for (int i = 1; i <= 4; i++) {
-			c.gridx = i;
-			rb = new JRadioButton("" + i);
-			rb.setActionCommand("QTR_qNumber;" + i);
-			rb.addActionListener(this);
-			qNumber.add(rb);
-			p.add(rb, c);
-		}
-		
-		c.gridx = 0;
-		c.gridy = 1;
-		p.add(new JLabel("Tooth number:"), c);
-		for (int i = 1; i <= 8; i++) {
-			c.gridx = i;
-			rb = new JRadioButton("" + i);
-			rb.setActionCommand("QTR_tNumber;" + i);
-			rb.addActionListener(this);
-			tNumber.add(rb);
-			p.add(rb, c);
-		}
-		c.gridx = 9;
-		rb = new JRadioButton("X");
-		rb.setActionCommand("QTR_tNumber;X");
-		rb.addActionListener(this);
-		tNumber.add(rb);
-		p.add(rb, c);
-		
-		String [] rootNames = {"1", "B", "L", "M", "D", "MB", "ML", "DB", "DL", "X"};
 
-		c.gridx = 0;
-		c.gridy = 2;
-		p.add(new JLabel("Root:"), c);
-		for (int i = 0; i < rootNames.length; i++) {
-			c.gridx = i + 1;
-			rb = new JRadioButton(rootNames[i]);
-			rb.setActionCommand("QTR_rNumber;" + rootNames[i]);
-			rb.addActionListener(this);
-			rNumber.add(rb);
-			p.add(rb, c);
+	public JPanel makeSelectorPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        // Quadrant number panel
+        JPanel qPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        qPanel.add(new JLabel("Quadrant number:"));
+        qNumber = new ButtonGroup();
+        for (int i = 1; i <= 4; i++) {
+            JRadioButton rb = new JRadioButton("" + i);
+            rb.setActionCommand("QTR_qNumber;" + i);
+            rb.addActionListener(this::actionPerformed); // Adjust listener method reference
+            qNumber.add(rb);
+            qPanel.add(rb);
+        }
+        mainPanel.add(qPanel);
+
+        // Tooth number panel
+        JPanel tPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        tPanel.add(new JLabel("Tooth number:"));
+        tNumber = new ButtonGroup();
+        for (int i = 1; i <= 8; i++) {
+            JRadioButton rb = new JRadioButton("" + i);
+            rb.setActionCommand("QTR_tNumber;" + i);
+            rb.addActionListener(this::actionPerformed); // Adjust listener method reference
+            tNumber.add(rb);
+            tPanel.add(rb);
+        }
+        JRadioButton rbX = new JRadioButton("X");
+        rbX.setActionCommand("QTR_tNumber;X");
+        rbX.addActionListener(this::actionPerformed); // Adjust listener method reference
+        tNumber.add(rbX);
+        tPanel.add(rbX);
+        mainPanel.add(tPanel);
+
+        // Root number panel
+        JPanel rPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        rPanel.add(new JLabel("Root:"));
+        rNumber = new ButtonGroup();
+        for (String rootName : rootNames) {
+            JRadioButton rb = new JRadioButton(rootName);
+            rb.setActionCommand("QTR_rNumber;" + rootName);
+            rb.addActionListener(this::actionPerformed); // Adjust listener method reference
+            rNumber.add(rb);
+            rPanel.add(rb);
+        }
+        mainPanel.add(rPanel);
+
+        // Image type panel
+        JPanel iPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        iPanel.add(new JLabel("Image Type:"));
+		iType = new ButtonGroup();
+        for (String imageType : imageTypes) {
+            JRadioButton rb = new JRadioButton(imageType);
+            rb.setActionCommand("ImageType;" + imageType);
+            rb.addActionListener(this::actionPerformed); // Adjust listener method reference
+            iType.add(rb);
+            iPanel.add(rb);
+        }
+        mainPanel.add(iPanel);
+
+        return mainPanel;
+    }
+
+
+	private JPanel addSingleSitesPanel() {
+		JPanel p = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;  // Use HORIZONTAL if you don't want vertical stretching
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 0;  // Set weightx to 0 for most components
+		c.gridwidth = 1;
+	
+		// Initialize ButtonGroups arrays
+		singleSitesButtonG = new ButtonGroup[numberOfSingleSites];
+
+		// Initialize singleSitesButtonG array
+		singleSitesButtonG = new ButtonGroup[numberOfSingleSites];
+		for (int i = 0; i < numberOfSingleSites; i++) {
+			singleSitesButtonG[i] = new ButtonGroup();  // Initialize each ButtonGroup in the array
 		}
+
+	
+		// Setup for single sites
+		for (int i = 0; i < numberOfSingleSites; i++) {
+			c.gridy = i;
+	
+
+			// Color label at the start of the row
+			c.gridx = 0;
+			addColorLabel(p, colors[0][i], c);
+	
+
+			// Toggle button for site names
+			c.gridx = 1;
+			addToggleButton(p, singleSitesButtonG[i], singleSitesNames[i], c);
+	
+			// Toggle button for "Missing"
+			c.gridx = 3;
+			addToggleButton(p, singleSitesButtonG[i], "Missing", c, "Missing " + singleSitesNames[i]);
+	
+			// Color label at the end of the row
+			c.gridx = 5;
+			addColorLabel(p, colors[0][i], c);
+		}
+
+	
 		return p;
 	}
 
-	private JPanel addSitesPanel () {
-			JPanel p = new JPanel(new GridBagLayout());
-			GridBagConstraints c = new GridBagConstraints();
-			JToggleButton rb;
-			
-			c.fill = java.awt.GridBagConstraints.BOTH;
-			c.anchor = java.awt.GridBagConstraints.WEST;
-			c.gridwidth = 1;
-			singleSitesButtonG = new ButtonGroup[numberOfSingleSites];
-			MDSitesButtonG = new ButtonGroup[MDSitesNames.length][2];
-
-			
-			// Single sites:
-			for (int i = 0; i < numberOfSingleSites; i++) {
-   	 			c.gridy = i;
-				singleSitesButtonG[i] = new  ButtonGroup();
-
-				c.gridx = 0;
-				c.gridwidth = 1;
-				Label colorLabel = new Label("");
-				colorLabel.setBackground(colors[0][i]);
-				p.add(colorLabel, c);
-
-				c.gridx = 1;
-				c.gridwidth = 2;
-				rb = new JToggleButton(singleSitesNames[i]);
-				rb.setActionCommand(singleSitesNames[i]);
-				rb.addActionListener(this);
-				singleSitesButtonG[i].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 3;
-				rb = new JToggleButton("Missing");
-				rb.setActionCommand("Missing " + singleSitesNames[i]);
-				rb.addActionListener(this);
-				rb.setSelected(true);
-				singleSitesButtonG[i].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 5;
-				c.gridwidth = 1;
-			   	colorLabel = new Label("");
-				colorLabel.setBackground(colors[0][i]);
-				p.add(colorLabel, c);					   
-			}
-
-			c.gridwidth = 2;
-			c.gridy = numberOfSingleSites + 1;
-
-
-			// Mesial/distal sites:
-			MDSitesButtonG = new ButtonGroup[MDSitesNames.length][2];
+	
+	private JPanel addMDSitesPanel() {
+		JPanel p = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.WEST;
+		c.weightx = 0;
+		c.gridwidth = 1;
+	
+		// Initialize ButtonGroups arrays
+		MDSitesButtonG = new ButtonGroup[MDSitesNames.length][2];
+		for (int i = 0; i < MDSitesNames.length; i++) {
+			MDSitesButtonG[i][0] = new ButtonGroup(); // Initialize each ButtonGroup for Mesial
+			MDSitesButtonG[i][1] = new ButtonGroup(); // Initialize each ButtonGroup for Distal
+		}
+	
+		// Labels should be in the first row
+		c.gridy = 0; // Set this to zero for the first row where labels will be
+	
+		c.gridx = 1; // Position for the "Mesial:" label
+		p.add(new JLabel("Mesial:"), c);
+	
+		c.gridx = 3; // Position for the "Distal:" label
+		p.add(new JLabel("Distal:"), c);
+	
+		// Setup toggle buttons for each site
+		for (int i = 0; i < MDSitesNames.length; i++) {
+			c.gridy = i + 1; // Start from the second row and move downwards
+	
+			// Color label at the start of the row
+			c.gridx = 0;
+			addColorLabel(p, colors[1][i], c);
+	
+			// Mesial toggle buttons
 			c.gridx = 1;
-			p.add(new Label("Mesial:", Label.CENTER), c);
+			addToggleButton(p, MDSitesButtonG[i][0], MDSitesNames[i] + "M", c);
 
+			c.gridx = 2;
+			addToggleButton(p, MDSitesButtonG[i][0], "Missing", c, "Missing " + MDSitesNames[i] + "M");
+	
+			// Distal toggle buttons
 			c.gridx = 3;
-			p.add(new Label("Distal:", Label.CENTER), c);
-			c.gridwidth = 1;
-			
-		   
-			for (int i = 0; i < numberOfSingleSites; i++) {  // BUG - rett opp!! XXX
-   	 			c.gridy++;
-				MDSitesButtonG[i] = new  ButtonGroup[2];
-				MDSitesButtonG[i][0] = new ButtonGroup();
-				MDSitesButtonG[i][1] = new ButtonGroup();
-				
-				c.gridx = 0;
-				Label colorLabel = new Label("");
-				colorLabel.setBackground(colors[0][numberOfSingleSites + i]);
-				p.add(colorLabel, c);
+			addToggleButton(p, MDSitesButtonG[i][1], MDSitesNames[i] + "D", c);
 
-				c.gridx = 1;
-				rb = new JToggleButton(MDSitesNames[i]);
-				rb.setActionCommand(MDSitesNames[i] + "M");
-				rb.addActionListener(this);
-				MDSitesButtonG[i][0].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 2;
-				rb = new JToggleButton("Missing");
-				rb.setActionCommand("Missing " + MDSitesNames[i] + "M");
-				rb.addActionListener(this);
-				rb.setSelected(true);
-				MDSitesButtonG[i][0].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 3;
-				rb = new JToggleButton(MDSitesNames[i]);
-				rb.setActionCommand(MDSitesNames[i] + "D");
-				rb.addActionListener(this);
-				MDSitesButtonG[i][1].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 4;
-				rb = new JToggleButton("Missing");
-				rb.setActionCommand("Missing " + MDSitesNames[i] + "D");
-				rb.addActionListener(this);
-				rb.setSelected(true);
-				MDSitesButtonG[i][1].add(rb);
-				p.add(rb, c);
-
-				c.gridx = 5;
-			   	colorLabel = new Label("");
-				colorLabel.setBackground(colors[1][numberOfSingleSites + i]);
-				p.add(colorLabel, c);					   
-			}
-
-			return p;
+			c.gridx = 4;
+			addToggleButton(p, MDSitesButtonG[i][1], "Missing", c, "Missing " + MDSitesNames[i] + "D");
+	
+			// Color label at the end of the row
+			c.gridx = 5;
+			addColorLabel(p, colors[1][i], c);
+		}
+	
+		return p;
 	}
-
-	   
 	
 
+	private void addColorLabel(JPanel panel, Color color, GridBagConstraints c) {
+		Label colorLabel = new Label("");
+		colorLabel.setBackground(color);
+		panel.add(colorLabel, c);
+	}
+	
+	private void addToggleButton(JPanel panel, ButtonGroup group, String text, GridBagConstraints c) {
+		addToggleButton(panel, group, text, c, text);
+	}
+	
+	private void addToggleButton(JPanel panel, ButtonGroup group, String text, GridBagConstraints c, String actionCommand) {
+		JToggleButton rb = new JToggleButton(text);
+		rb.setActionCommand(actionCommand);
+		rb.addActionListener(this);
+		rb.setEnabled(false);
+		group.add(rb);
+		panel.add(rb, c);
+	}
+	
+
+	private void addLabel(JPanel panel, String text, GridBagConstraints c) {
+		panel.add(new Label(text, Label.CENTER), c);
+	}
+	   
+
+	
 	// Resets all buttons (not the root/tooth/quadrant)
 	private void resetGUI () {
 			// Remove object selection:
 		 	qNumber.clearSelection();
 			tNumber.clearSelection();
 			rNumber.clearSelection();
+			iType.clearSelection();
 
 			
 			// Single sites:
@@ -819,6 +903,9 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 
 			// Clear comments field:
 			comments.setText("");
+
+			activateAllMenus(false);
+			comments.setEnabled(false);
 	}
 
 	private void setSelectedRadioButton(ButtonGroup bg, int index) {
@@ -879,11 +966,11 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	
 		GenericDialog aboutDialog = new GenericDialog("About plugin");
 		String aboutText = "Endodontic measurements plugin\n" +
-		"Copyright (C) 2014  Gerald Torgersen\n \n"+
+		"Copyright (C) 2024  Gerald Torgersen\n \n"+
 		"This program is free software: you can redistribute it and/or modify it under the terms of the\nGNU General Public License version 3 as published by the Free Software Foundation.\n" +
 		"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;\nwithout even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\nSee the GNU General Public License for more details.\n" +
 		"You should have received a copy of the GNU General Public License along with this program.\nIf not, see <http://www.gnu.org/licenses/>.\n \n" +   
-		"Programmed by Gerald R. Torgersen <gerald@odont.uio.no>\nFaculty of dentistry, University of Oslo, Norway\nVersion 1.0 09-30-2013";
+		"Programmed by Gerald R. Torgersen <gerald@odont.uio.no>\nFaculty of dentistry, University of Oslo, Norway\nVersion 1.5 03-05-2024";
 		aboutDialog.addMessage(aboutText);
 		setMenuBar(menuBar);
 	
@@ -894,7 +981,130 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	 *  Other helper methods
 	 *******************************************************************************************************************************/
 	
-	private String getWorkingDirectory() {
+	/* Set up parameters for the app */
+/* Set up parameters for the app */
+	private void configApp() {
+		String pluginsDirectory = IJ.getDirectory("plugins");
+		Path configFilePath;
+
+		// Check if running from the ImageJ plugins directory
+		if (pluginsDirectory != null) {
+			configFilePath = Paths.get(pluginsDirectory, "Endodontic_Measurements", "Endodontic_Measurements.cfg");;
+		} else if (debug) {
+			// Development mode: Use a specific location for the configuration file
+			configFilePath = Paths.get("M:", "GitHub", "EndodonticMeasurements", "src", "main", "resources", "Endodontic_Measurements.cfg");
+		} else {
+            configFilePath = null;
+        }
+
+		// Set default values for all settings
+		String defaultOperator = System.getProperty("user.name");
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+		char defaultDecimalFormatSymbol = symbols.getDecimalSeparator();
+		String defaultMeasurementStore = "top";
+
+		// Initialize variables with defaults
+		operator = defaultOperator;
+		decimalFormatSymbol = defaultDecimalFormatSymbol;
+		measurementStore = defaultMeasurementStore;
+
+		File configFile = new File(configFilePath.toString());
+
+		// If a config file path is set, attempt to read the config file
+		if (configFile.exists() && configFile.isFile()) {
+
+			try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
+				String line;
+				String[] parts;
+
+				// Debugging statement to check the operator line
+				line = reader.readLine();
+				if (line != null) {
+					parts = line.split(":");
+					if (parts.length > 1 && !parts[1].trim().isEmpty()) {
+						operator = parts[1].trim();
+					}
+				}
+
+				// Debugging statement to check the decimal separator line
+				line = reader.readLine();
+				if (line != null) {
+					parts = line.split(":");
+					if (parts.length > 1 && !parts[1].trim().isEmpty()) {
+						decimalFormatSymbol = parts[1].trim().charAt(0);
+					}
+				}
+
+				// Debugging statement to check the storage mode line
+				line = reader.readLine();
+				if (line != null) {
+					parts = line.split(":");
+					if (parts.length > 1 && !parts[1].trim().isEmpty()) {
+						measurementStore = parts[1].trim();
+					}
+				}
+
+				// Debugging statement to check the storage mode line
+				line = reader.readLine();
+				if (line != null) {
+					parts = line.split(":");
+					if (parts.length > 1 && !parts[1].trim().isEmpty()) {
+						saveScoredCopy = Boolean.parseBoolean(parts[1].trim());
+					}
+				}
+			} catch (IOException e) {
+				IJ.log("Error reading configuration file: " + e.getMessage());
+			}
+
+	}
+
+		// Log the applied settings for verification
+		dM("Operator: " + operator);
+		dM("Decimal Separator: " + decimalFormatSymbol);
+		dM("Measurement Store: " + measurementStore);
+
+	}
+
+
+	/*****************************************************************************/
+	    // Single method that activates/deactivates all button groups
+		public void activateAllMenus(Boolean activate) {
+			// Handle all individual ButtonGroups
+			toggleButtonGroup(pAI, activate);
+	
+			// Handle all 1D ButtonGroup arrays
+			toggleButtonGroupArray(qualitativeYNOptionsButtonG, activate);
+			toggleButtonGroupArray(qualitativeOtherOptionsButtonG, activate);
+			toggleButtonGroupArray(singleSitesButtonG, activate);
+	
+			// Handle all 2D ButtonGroup arrays
+			for (ButtonGroup[] buttonGroupArray : MDSitesButtonG) {
+				toggleButtonGroupArray(buttonGroupArray, activate);
+			}
+		}
+	
+		// Toggle a single ButtonGroup
+		private void toggleButtonGroup(ButtonGroup group, Boolean activate) {
+			if (group != null) {
+				Enumeration<AbstractButton> buttons = group.getElements();
+				while (buttons.hasMoreElements()) {
+					buttons.nextElement().setEnabled(activate);
+				}
+			}
+		}
+	
+		// Toggle all ButtonGroups in a 1D array
+		private void toggleButtonGroupArray(ButtonGroup[] groupArray, Boolean activate) {
+			if (groupArray != null) {
+				for (ButtonGroup group : groupArray) {
+					toggleButtonGroup(group, activate);
+				}
+			}
+		}
+
+	/*****************************************************************************/
+	
+	 private String getWorkingDirectory() {
 			FileInfo fi = imp.getOriginalFileInfo();
 			return fi.directory;
 	}
@@ -953,269 +1163,6 @@ public class Endodontic_Measurements extends PlugInFrame implements ActionListen
 	    IJ.runPlugIn(clazz.getName(), "");
 	}
 	
-}
-
-/*************************************************************************************************************************
-* Holds data and methods for measurements of a single tooth 
-**************************************************************************************************************************/
-class Root {
-	
-	private final boolean debug = true; // Shows debug messages when set
-	
-	ImagePlus imp;
-	RoiManager rm;		
-	
-	int quadrantNumber;
-	String rootName, toothNumber;
-	
-	Calibration calibration;
-	DecimalFormat formatter; 
-
-	// Diameters of circles indicating distance from AGP
-	final int NEAR = 2; // 1 mm from AGP
-	final int FAR = 8; // 2 mm from AGP
-	
-	Hashtable <String, Site> sites;
-	Hashtable <String, String> qualitativeObservations;
-	
-	public Root (ImagePlus imp, char decimalFormatSymbol) {
-			
-			this.imp = imp;
-			
-			// Get calibration and unit, initialize formatter:
-			calibration = imp.getCalibration();
-			if (calibration.getUnit().equals("pixels"))
-					formatter = new DecimalFormat("####");
-			else
-					formatter = new DecimalFormat("0.00");
-			dM(calibration.toString());
-			dM("Calibratet value from 1: " + calibration.getCValue(1));
-			DecimalFormatSymbols dFS = new DecimalFormatSymbols(Locale.US);
-			dFS.setDecimalSeparator(decimalFormatSymbol);
-			formatter.setDecimalFormatSymbols(dFS);
-			
-			quadrantNumber = -1;
-			toothNumber = "-1";
-			rootName = "-1";
-
-			
-			// Initialize roimanager:
-			if (RoiManager.getInstance() != null) {
-					rm = RoiManager.getInstance();
-					emptyRoiManager();
-			} else 
-					rm = new RoiManager();
-			rm.setVisible(false);
-			rm.runCommand("Show All");
-			
-			sites = new Hashtable<String, Site> ();
-			qualitativeObservations = new Hashtable<String, String> ();
-
-			
-	}
-	
-	public String toString() {
-			return calibration.getUnit() + "; " + quadrantNumber + "; " + toothNumber + "; " + rootName + "; ";
-	}
-			
-
-	
-	// Update root and tooth information:
-	public void setQuadrantNumber(int number) {
-			quadrantNumber = number;
-	}
-
-	public void setToothNumber(String number) {
-			toothNumber = number;
-	}
-
-	public void setRootName(String name) {
-			//IJ.log(name);
-			rootName = name;
-	}
-
-
-	// Set sites and qualitative observations
-	public void setSite(Roi roi, String name, String [] colorNames) {
-			//dM("Adding: " + name);
-			removeIfExist(name); 
-			Point p = new Point((int)roi.getBounds().getX(), (int)roi.getBounds().getY());
-			if (name.trim().endsWith("M")) {
-					addToRoiManager(roi, name, colorNames[0]);
-					sites.put(name, new Site(p, Color.decode(colorNames[0]), formatter, calibration));
-			} else {
-					addToRoiManager(roi, name, colorNames[1]);
-					sites.put(name, new Site(p, Color.decode(colorNames[1]), formatter, calibration));
-			}
-	}
-	
-	public void setQualitativeObservation(String observation, String score) {
-			qualitativeObservations.put(observation, score);
-	}
-
-
-	
-	// Helper methods		
-	public void removeIfExist(String name) {
-			//dM("Removing: " + name);
-			int index = indexOfRoi(name);
-			if (index != -1) {
-					rm.select(index);
-					rm.runCommand("Delete");
-					sites.remove(name);
-			}
-	}
-	
-	public void drawArcs(String siteName) {
-			removeArcs();
-			
-			Site s = sites.get(siteName);
-			double x = s.getX();
-			double y = s.getY();
-			Roi r = circularRoiCenteredAtSite(x, y, calibration.getRawX(NEAR));
-			dM("circularRoiCenteredAtSite: " + x + ", " + y + ", " + calibration.getRawX(NEAR));
-			//dM("circularRoi diameters: " + 
-			addToRoiManager(r, "near", "0xFF0000");
-
-			r = circularRoiCenteredAtSite(x, y, calibration.getRawX(FAR));
-			addToRoiManager(r, "far", "0xFF0000");
-			rm.select(0);		
-	}
-	
-	
-	public void removeArcs() {
-			removeIfExist("near");
-			removeIfExist("far");
-	}
-	
-	private void addToRoiManager(Roi r, String name, String color) {
-			color = "#" + color.substring(2); // format for runCommand: "#FF0000"
-			r.setName(name);
-			Roi.setColor(Color.decode(color));
-			imp.setRoi(r);
-			rm.runCommand("Add", color, 0);		
-	}
-	
-	
-	private int indexOfRoi(String roiName) {
-			int n = rm.getCount();
-			for (int i = 0; i < n; i++)
-					if (RoiManager.getName(String.valueOf(i)).equals(roiName))
-							return i;						
-			return - 1; // not found
-	}
-	
-	
-	/* Adds coordinates of site and coordinates of intersection site of normal
-	   with main axis to a string
-	*/
-	public String siteCoordinatesToString(String siteName) {
-			// Check if exist:
-			if (sites.containsKey(siteName)) {
-					Site s = sites.get(siteName);
-					return s.coordinatesToString();
-			} else
-					return Site.missing();
-	}
-
-	public String qualitativeObservationsToString(String qualitativeObservation) {
-			// Check if exist:
-			if (qualitativeObservations.containsKey(qualitativeObservation))
-					return qualitativeObservations.get(qualitativeObservation);
-			else
-					return "NS";
-	}
-
-	
-	
-	
-	public void burnInSites() {
-			ImageProcessor imPro = imp.getProcessor();
-			Enumeration<String> keys = sites.keys();
-			Site s;
-			while(keys.hasMoreElements() ) {
-					s = sites.get(keys.nextElement());
-					imPro.setColor(s.getColor());
-					s.siteAsRoi().drawPixels(imPro);
-					circularRoiCenteredAtSite(s.getX(), s.getY(), 10).drawPixels(imPro);
-			}
-	}
-	
-	public boolean isIdentified() {
-		return (quadrantNumber > 0 && !toothNumber.equals("-1") && !rootName.equals("-1"));
-	}
-	
-	/*
-	 *  Locates roi with the center coordinate
-	 */
-	private Roi circularRoiCenteredAtSite(double x, double y, double size) {
-			double offset = size/2; 
-			Roi r = new OvalRoi(x - offset, y - offset, size, size);
-			return r;
-	}
-
-	
-	private void emptyRoiManager() {
-			//dM("Emptying ROI manager");
-			if (rm.getCount() > 0) {
-					rm.runCommand("Select All");
-					rm.runCommand("Delete");
-			}
-	}
-	
-	// Message to log window in debug modus
-		private void dM(String message) {
-				if(debug) IJ.log(message);
-		}
-	
-	
-}
-
-
-
-
-/****************************************************************************************** 
-*  Holds the site of the site and the site of the normal from the site
-*  intersecting with the main axis. Provides formatted output of coordinates.
-*/
-
-class Site {
-	Point site;
-	DecimalFormat formatter;
-	Calibration calibration;
-	Color color;
-	
-	Site (Point site, Color color, DecimalFormat formatter, Calibration calibration) {
-			this.site = site;
-			this.color = color;
-			this.formatter = formatter;
-			this.calibration = calibration;
-	}
-	
-	public PointRoi siteAsRoi() {
-			return new PointRoi(site.getX(), site.getY());
-	}
-	
-	public double getX() {
-			return site.getX();
-	}
-	
-	public double getY() {
-			return site.getY();
-	}
-	// Returns coordinates converted to image units
-	public String coordinatesToString() {
-			return formatter.format(calibration.getX(site.getX())) + "; " 
-			+ formatter.format(calibration.getY(site.getY())) + "; ";
-	}
-	
-	public Color getColor() {
-			return color;
-	}
-	
-	static String missing() {
-			return "X;X;";		
-	}
 }
 
 
