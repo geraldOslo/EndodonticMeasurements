@@ -120,7 +120,7 @@ Table 3: Qualitative observations stored (NS for not scored)
 	- if local choosen: <image-filename without extension>-measurements.csv in same folder as image file
 	One line per root and measurement added to the bottom of the csv if existing.
 
-###Format of the csv file:
+### Format of the csv file:
 ```
 <path and filename>;<timestamp>;<operator>;<image type>;<EXIF-unit>;  
 <quadrant number>, <tooth number>, <root number>, 
