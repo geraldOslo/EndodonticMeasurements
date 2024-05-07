@@ -12,7 +12,7 @@ The Plugin is used to mark landmarks as apex and stores the coordinates in a csv
 Introduction
 Repeated measurements of sites, distances and angles for the evaluation of the outcome of endodontic treatment can be time consuming and error prone. We provide a tool which allows the observer to concentrate on locating the correct point of the site and store the coordinates by mouse clicks.
 The plugin is an extension of the free and open source image processing and analyzing package ImageJ1. It is written in the Java language and the source code is distributed under the Creative Commons Attribution 4.0 International Public License. The plugin is based on a similar plugin used to measure periodontal attachment level loss [2].
-With the plugin a spreadsheet for calculation of distances and angles is available.
+With the plugin a spreadsheet for calculation of distances and angles is available (will be added soon).
 Copy the entire Endodontic_Measurements to the plugins folder of your ImageJ installation.
 
 ## The sites
@@ -120,7 +120,7 @@ Table 3: Qualitative observations stored (NS for not scored)
 	- if local choosen: <image-filename without extension>-measurements.csv in same folder as image file
 	One line per root and measurement added to the bottom of the csv if existing.
 
-Format:
+###Format of the csv file:
 ```
 <path and filename>;<timestamp>;<operator>;<image type>;<EXIF-unit>;  
 <quadrant number>, <tooth number>, <root number>, 
