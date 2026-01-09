@@ -1,4 +1,5 @@
-This is plain old ImageJ version of the plugin with updates. I never got the Maven version to work, so I gave ut that approach.
+# Endodontic Measurements 2.0
+This is the modernized version of the Endodontic Measurements plugin for ImageJ. Version 2.0 features a completely refactored Swing-based UI, improved robustness, and dynamic scaling for better visibility on various screen resolutions.
 
 I have a working version of this Plugin, and it has already been used in some research:<br>
 Jordal, K et al. (2021) [1].
@@ -122,7 +123,7 @@ Table 3: Qualitative observations stored (NS for not scored)
 
 ### Format of the csv file:
 ```
-<path and filename>;<timestamp>;<operator>;<image type>;<EXIF-unit>;  
+<path and filename>;<timestamp>;<operator>;<EXIF-unit>;
 <quadrant number>, <tooth number>, <root number>, 
 <apical voids (NS, N, Y)>, <coronal voids (NS, N, Y)>, <orifise plug (NS, N, Y)>, 
 <Apical file fracture (NS, N, Y)>, <Coronal file fracture (NS, N, Y)>, 
@@ -136,12 +137,38 @@ Bone level M, Bone level D,  CEJ M, CEJ D,
 canal side M 1 mm, canal side D 1 mm,  canal side M 4mm, canal side D 4 mm, >
 ```
 
+## Compilation and Installation
+
+### 1. Requirements
+- **Java Development Kit (JDK)**: Version 8 or higher (JDK 25 recommended for development).
+- **ImageJ**: A local installation of ImageJ with `ij.jar`.
+
+### 2. Compilation
+To compile the plugin, use the provided `compile_v2.bat` script located in the `plugin/Endodontic_Measurements_2.0` directory.
+- Open a terminal/command prompt in that directory.
+- Run `compile_v2.bat`. It uses the `--release 8` flag to ensure compatibility with ImageJ's Java 8 runtime.
+- The compiled `.class` files will be placed in the `bin` directory.
+
+> [!NOTE]
+> You may need to update the path to your JDK and `ij.jar` in the `compile_v2.bat` file.
+
+### 3. Packaging and Installation
+To install the plugin in ImageJ:
+1. Run `package_v2.bat` in the same directory. This will create `Endodontic_Measurements_2.0.jar`.
+2. Create a folder named `Endodontic_Measurements` inside your ImageJ `plugins` directory.
+3. Copy **both** `Endodontic_Measurements_2.0.jar` and `Endodontic_Measurements.cfg` into this new folder: `C:\ImageJ\plugins\Endodontic_Measurements\`.
+4. Restart ImageJ. The plugin will be available under **Plugins > Endodontic Measurements 2.0**.
+
+### 4. File Structure (Inside the JAR)
+For manual setup, ensure the following structure is maintained:
+- `plugins.config`: Maps the main class to the ImageJ menu.
+- `no/uio/odont/Endodontic_Measurements_2.class`: The plugin entry point.
+- `no/uio/odont/ui/`: UI component classes.
+- `no/uio/odont/model/`: Data model classes.
+- `no/uio/odont/util/`: Utility and configuration classes.
+
 ## The configuration file
-The plugin is configured by an optional config file: Endodontic_Measurements.cfg in the same folder as the plugin:
-operator:<operator name/ID> if missing: login user ID
-decimal-separator:./, if missing uses system default
-measurement_store:top/local if missing uses top storage
-save_scored_image_copy:true/false if missing true
+The plugin is configured by an optional config file: `Endodontic_Measurements.cfg`. This file should be placed in the same folder as the image file (for local storage) or in the `plugins/Endodontic_Measurements` directory.
 
 # References
 1. Jordal, Kristin; Skudutyte-Rysstad, Rasa; Sen, Abhijit; Torgersen, Gerald; Ørstavik, Dag & Sunde, Pia Titterud (2021). Effects of an individualized training course on technical quality and periapical status of teeth treated endodontically by dentists in the Public Dental Service in Norway. An observational intervention study. International Endodontic Journal. ISSN 0143-2885. doi: [10.1111/iej.13669](https://doi.org/10.1111/iej.13669).

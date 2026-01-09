@@ -7,6 +7,9 @@ from PyQt6.QtGui import QPixmap, QPainter, QPen, QColor, QAction
 from image_handler import ImageHandler
 from data_model import Root, Site, DataManager
 
+# Constants
+PIXELS_PER_MM = 20.0 # Default calibration assumption
+
 class ImageViewer(QLabel):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -15,11 +18,13 @@ class ImageViewer(QLabel):
         self.scale_factor = 1.0
         self.current_pixmap = None
         self.temp_point = None # (x, y)
+        self.guide_circles = [] # List of tuples (x, y, radius)
         self.parent_window = parent
 
     def load_image(self, path):
         q_img = self.image_handler.load_image(path)
         self.current_pixmap = QPixmap.fromImage(q_img)
+        self.guide_circles = [] # Clear guide circles
         self.update_display()
 
     def update_display(self):
@@ -136,10 +141,29 @@ class ImageViewer(QLabel):
             painter.drawLine(cx - r, cy, cx + r, cy)
             painter.drawLine(cx, cy - r, cx, cy + r)
             
+        # Draw guide circles
+        if self.guide_circles:
+            painter.setPen(QPen(QColor(255, 0, 0), int(pen_width)))
+            painter.setBrush(Qt.BrushStyle.NoBrush)
+            for x, y, radius in self.guide_circles:
+                # Radius in image pixels needs to be scaled to screen pixels?
+                # No, standard is: draw on image coords.
+                # But wait, we are drawing on a pixmap that is NOT yet scaled?
+                # The pixmap here is `q_img` -> `pixmap` which IS the high res image.
+                # So we draw in Image Coordinates.
+                
+                cx, cy = int(x), int(y)
+                r = int(radius)
+                painter.drawEllipse(QPoint(cx, cy), r, r)
+
         painter.end()
-        
+
         self.current_pixmap = pixmap
         self.update_display()
+        
+    def clear_guide_circles(self):
+        self.guide_circles = []
+        self.refresh_image_with_sites()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -428,6 +452,9 @@ class MainWindow(QMainWindow):
             # I'll update ImageHandler to store the path or pass it from MainWindow.
             # MainWindow has it in open_image, let's store it there.
             if hasattr(self, 'current_image_path'):
+                # Clear guide circles before saving/resetting
+                self.image_viewer.clear_guide_circles()
+                
                 self.data_manager.save_root(self.root_data, self.current_image_path)
                 
                 # Save Burned-in Image
@@ -468,6 +495,19 @@ class MainWindow(QMainWindow):
         if self.image_viewer.temp_point:
             x, y = self.image_viewer.temp_point
             self.root_data.sites[site_name] = Site(site_name, x, y)
+            
+            # Special logic for "Apex": Draw guide circles
+            if site_name == "Apex":
+                # Circle 1: 1 mm radius
+                r1 = 1.0 * PIXELS_PER_MM
+                # Circle 2: 4 mm radius
+                r4 = 4.0 * PIXELS_PER_MM
+                
+                self.image_viewer.guide_circles = [
+                    (x, y, r1),
+                    (x, y, r4)
+                ]
+            
             self.image_viewer.temp_point = None
             self.image_viewer.refresh_image_with_sites()
             self.update_status(f"Site recorded: {site_name}")
