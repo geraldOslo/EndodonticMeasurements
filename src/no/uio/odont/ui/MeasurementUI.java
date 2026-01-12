@@ -561,8 +561,49 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         tNumberGroup.clearSelection();
         rNumberGroup.clearSelection();
         // iTypeGroup.clearSelection(); // Removed
+
+        // Clear site selections
+        if (singleSiteGroups != null) {
+            for (ButtonGroup bg : singleSiteGroups) {
+                if (bg != null)
+                    bg.clearSelection();
+            }
+        }
+
+        if (mdSiteGroups != null) {
+            for (ButtonGroup[] row : mdSiteGroups) {
+                if (row != null) {
+                    if (row[0] != null)
+                        row[0].clearSelection();
+                    if (row[1] != null)
+                        row[1].clearSelection();
+                }
+            }
+        }
+
+        // Clear qualitative selections
+        if (pAiGroup != null)
+            pAiGroup.clearSelection();
+
+        if (qualitativeYnoGroups != null) {
+            for (ButtonGroup bg : qualitativeYnoGroups) {
+                if (bg != null)
+                    bg.clearSelection();
+            }
+        }
+
+        if (qualitativeOtherGroups != null) {
+            for (ButtonGroup bg : qualitativeOtherGroups) {
+                if (bg != null)
+                    bg.clearSelection();
+            }
+        }
+
         commentsField.setText("");
-        // ... reset rest if needed
+
+        // Request repaint to ensure UI updates visually if needed,
+        // though ButtonGroup changes should handle it.
+        this.repaint();
     }
 
     public String getComments() {
