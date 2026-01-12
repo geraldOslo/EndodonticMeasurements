@@ -22,6 +22,10 @@ import no.uio.odont.util.DataStorage;
 /**
  * Main entry point for Endodontic Measurements 2.0.
  * Orchestrates the measurement process.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlListener {
     private ImagePlus imp;

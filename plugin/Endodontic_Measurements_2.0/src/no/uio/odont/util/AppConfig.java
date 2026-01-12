@@ -13,6 +13,10 @@ import ij.IJ;
 
 /**
  * Handles application configuration loading and provides access to settings.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class AppConfig {
     private String operator;

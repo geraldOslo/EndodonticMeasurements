@@ -17,6 +17,10 @@ import ij.measure.Calibration;
  * Represents a single tooth/root being measured.
  * Manages all sites and qualitative observations for a specific root.
  * Uses ImageJ Overlay for visualization instead of RoiManager.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class MeasurementRoot {
     private final ImagePlus imp;

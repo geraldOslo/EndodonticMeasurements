@@ -6,6 +6,10 @@ import no.uio.odont.model.MeasurementSite;
 
 /**
  * Utility class for performing endodontic calculations.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class Calculations {
 

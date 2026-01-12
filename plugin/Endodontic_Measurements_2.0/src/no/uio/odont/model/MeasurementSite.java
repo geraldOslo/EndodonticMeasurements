@@ -10,6 +10,10 @@ import ij.measure.Calibration;
  * Represents a specific measurement site on an image.
  * Stores coordinates, visual properties, and handles coordinate transformation
  * based on calibration.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class MeasurementSite {
     private final Point2D.Double coordinates;

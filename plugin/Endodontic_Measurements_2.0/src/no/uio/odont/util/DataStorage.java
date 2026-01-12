@@ -16,6 +16,10 @@ import no.uio.odont.model.MeasurementSite;
 
 /**
  * Handles saving of measurement results and modified images.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class DataStorage {
     private static final String GLOBAL_RESULT_FILENAME = "Measurements.csv";

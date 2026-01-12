@@ -17,6 +17,10 @@ import no.uio.odont.util.AppConfig;
 /**
  * Modernized GUI for the Endodontic Measurements plugin.
  * Extends PlugInFrame to integrate with ImageJ.
+ * 
+ * @author Gerald Torgersen
+ * @version 2.0
+ * @date January 2026
  */
 public class MeasurementUI extends PlugInFrame implements ActionListener {
     private final ControlListener listener;
@@ -577,6 +581,6 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
 
     private void showAbout() {
         IJ.showMessage("Endodontic Measurements 2.0",
-                "Modernized version of the original plugin.\nGerald Torgersen (2024)");
+                "Modernized version of the original plugin.\nGerald Torgersen (2026)");
     }
 }
