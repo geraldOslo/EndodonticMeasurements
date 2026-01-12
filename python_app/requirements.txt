@@ -1,5 +1,0 @@
-PyQt6
-opencv-python
-pillow
-numpy
-pandas
