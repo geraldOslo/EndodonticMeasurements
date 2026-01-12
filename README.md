@@ -1,6 +1,4 @@
-# Endodontic Measurements 2.0
-
-# Endodontic Measurements 2.0
+# Endodontic Measurements
 
 ## Overview
 The **Endodontic Measurements** plugin is a modernized tool for ImageJ designed to semi-automate the measurement of landmarks on dental radiographs. It allows observers to locate specific sites on a tooth/root and record their coordinates and qualitative observations (like PAI scores or clinical findings) directly into a structured CSV file for further analysis.
