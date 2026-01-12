@@ -44,11 +44,10 @@ Repeated measurements of sites, distances, and angles for evaluating endodontic 
 2. Launch the plugin by pressing **F5** (or via Plugins > Endodontic Measurements 2.0).
 3. Select the **Point Tool** (the plugin ensures this is selected by default).
 3. Identify the object by selecting the **Quadrant**, **Tooth**, and **Root** numbers in the identification panel.
-4. Select an **Image Type** (Digital or Analog).
 
 ### Placing Markers
-- Select a site button (e.g., "Apex").
-- Click on the corresponding point on the X-ray image.
+- Click on the point for a landmark on the X-ray image.
+- Select a the corresponding site button (e.g., "Apex").
 - The plugin will record the point and provide visual feedback.
 - **Reference Circles**: When you place the **Apex GP** point, two circles (1mm and 4mm radius) are automatically drawn to guide you in placing the root canal diameter points.
 
