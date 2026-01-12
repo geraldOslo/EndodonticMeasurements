@@ -85,7 +85,7 @@ Repeated measurements of sites, distances, and angles for evaluating endodontic 
 Sites 4 and 5 are defined to obtain the Schneider angle [3] together with the AGP. The sites 4, 5 and 7, 8 are used to measure the diameter of the root canal at distances 1 and 4 mm to the AGP. The user is guided to the distances by two circles centered at the AGP (Figure 1b).
 
 <table>
-    <tr><img src="figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="500"/></tr>
+    <tr><img src="figures/EndodonticToothAngles.svg" alt="Figure 2: The sites" width="300"/></tr>
     <tr>Figure 2: The Schneider angle (a) and the trigonometrics (b)</tr>
 </table>
 
@@ -108,7 +108,7 @@ The coordinate data are imported to a spreadsheet for calculation of distances a
 The distance between the apex and the AGP carries a sign depending on if there is a surplus (positive sign) or a deficit (negative sign) of filling material (Figure 3). The sign is automatically set in the evaluation spreadsheet by comparing the y-coordinates of points 1 and 2 together with the position of the tooth (maxilla or mandible) given by the quadrant number.
 
 <table>
-    <tr><img src="figures/EndodonticRoot_d.svg" alt="Figure 3" width="800"/></tr>
+    <tr><img src="figures/EndodonticRoot_d.svg" alt="Figure 3" width="600"/></tr>
     <tr>Figure 3: Deficit (a) and surplus (b) of filling material</tr>
 </table>
 
