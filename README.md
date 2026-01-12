@@ -41,7 +41,8 @@ Repeated measurements of sites, distances, and angles for evaluating endodontic 
 
 ### Setting up Measurements
 1. Open a radiograph in ImageJ.
-2. Select the **Point Tool** (the plugin ensures this is selected by default).
+2. Launch the plugin by pressing **F5** (or via Plugins > Endodontic Measurements 2.0).
+3. Select the **Point Tool** (the plugin ensures this is selected by default).
 3. Identify the object by selecting the **Quadrant**, **Tooth**, and **Root** numbers in the identification panel.
 4. Select an **Image Type** (Digital or Analog).
 
@@ -178,7 +179,7 @@ The plugin looks for `Endodontic_Measurements.cfg` in the following locations:
 ---
 
 ## Compilation and Running
-To compile and run the plugin, you can use the provided batch scripts in the `plugin/Endodontic_Measurements_2.0` directory.
+To compile and run the plugin, you can use the provided batch scripts in the repository root.
 
 ### Requirements
 - **Java Development Kit (JDK)**: Version 8 or higher.
@@ -186,7 +187,8 @@ To compile and run the plugin, you can use the provided batch scripts in the `pl
 
 ### Commands
 - **Compile**: Run `compile_v2.bat`.
-- **Run**: Run `run_v2.bat`.
+- **Package**: Run `package_v2.bat` (outputs to `dist/`).
+- **Install**: Run `install_v2.bat` (installs from `dist/` to ImageJ).
 
 ---
 
