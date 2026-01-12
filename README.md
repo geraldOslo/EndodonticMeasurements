@@ -74,8 +74,8 @@ Repeated measurements of sites, distances, and angles for evaluating endodontic 
 
 <table>
     <tr>
-        <td><img src="figures/EndodonticTooth.svg" alt="Figure 1a: The sites" width="500"/></td>
-        <td><img src="figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="350"/></td>
+        <td><img src="figures/EndodonticTooth.svg" alt="Figure 1a: The sites" width="400"/></td>
+        <td><img src="figures/EndodonticRoot.svg" alt="Figure 1b: Circles to place root canal diameter" width="250"/></td>
     </tr>
     <tr>
         <td colspan="2" style="text-align:center">Figure 1: The sites (a) and the circle to place the root canal diameter (b)</td>
