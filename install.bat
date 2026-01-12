@@ -1,19 +1,19 @@
 @echo off
-set "DEST_DIR=C:\ImageJ\plugins\Endodontic_Measurements_2.0"
+set "DEST_DIR=C:\ImageJ\plugins\Endodontic_Measurements"
 set "JAR_NAME=Endodontic_Measurements_2.0.jar"
 set "CONFIG_NAME=Endodontic_Measurements.cfg"
 
 echo Starting installation...
 
 echo [1/4] Compiling...
-call compile_v2.bat
+call compile.bat
 if %errorlevel% neq 0 (
     echo Compilation failed. Installation aborted.
     exit /b %errorlevel%
 )
 
 echo [2/4] Packaging...
-call package_v2.bat
+call package.bat
 if %errorlevel% neq 0 (
     echo Packaging failed. Installation aborted.
     exit /b %errorlevel%

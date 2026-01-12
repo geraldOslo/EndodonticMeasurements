@@ -22,7 +22,7 @@ echo "Installing Endodontic Measurements 2.0..."
 # Try to find installation directory
 for dir in "${POSSIBLE_DIRS[@]}"; do
     if [ -d "$dir" ]; then
-        DEST_DIR="$dir/Endodontic_Measurements_2.0"
+        DEST_DIR="$dir/Endodontic_Measurements"
         echo "Found ImageJ plugins directory at: $dir"
         break
     fi
@@ -33,7 +33,7 @@ if [ -z "$DEST_DIR" ]; then
     echo "Could not automatically find ImageJ plugins directory."
     read -p "Please enter the path to your ImageJ/plugins folder: " USER_PATH
     if [ -d "$USER_PATH" ]; then
-        DEST_DIR="$USER_PATH/Endodontic_Measurements_2.0"
+        DEST_DIR="$USER_PATH/Endodontic_Measurements"
     else
         echo "Error: Directory does not exist."
         exit 1

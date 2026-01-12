@@ -1,5 +1,5 @@
 @echo off
-set "DEST_DIR=C:\ImageJ\plugins\Endodontic_Measurements_2.0"
+set "DEST_DIR=C:\ImageJ\plugins\Endodontic_Measurements"
 set "JAR_NAME=Endodontic_Measurements_2.0.jar"
 set "CONFIG_NAME=Endodontic_Measurements.cfg"
 

@@ -22,7 +22,7 @@ For easy installation without compiling code:
 3.  Run `bash install.sh`.
 
 ### Manual Installation
-Copy the files from the `dist` folder to your ImageJ plugins folder (e.g., `ImageJ/plugins/Endodontic_Measurements_2.0/`):
+Copy the files from the `dist` folder to your ImageJ plugins folder (e.g., `ImageJ/plugins/Endodontic_Measurements/`):
 - `Endodontic_Measurements_2.0.jar`
 - `Endodontic_Measurements.cfg`
 
@@ -167,8 +167,8 @@ Measurements are appended to a CSV file. Version 2.0 introduces a specific namin
 ## Configuration
 The plugin looks for `Endodontic_Measurements.cfg` in the following locations:
 1. The local directory where the plugin is running.
-2. `ImageJ/plugins/Endodontic_Measurements_2.0/`.
-3. `ImageJ/plugins/Endodontic_Measurements/` (Legacy location).
+2. `ImageJ/plugins/Endodontic_Measurements/`.
+
 
 **Config Options:**
 - `operator`: <Your Name/ID>
@@ -186,9 +186,9 @@ To compile and run the plugin, you can use the provided batch scripts in the rep
 - **ImageJ**: A local installation of ImageJ with `ij.jar`.
 
 ### Commands
-- **Compile**: Run `compile_v2.bat`.
-- **Package**: Run `package_v2.bat` (outputs to `dist/`).
-- **Install**: Run `install_v2.bat` (installs from `dist/` to ImageJ).
+- **Compile**: Run `compile.bat`.
+- **Package**: Run `package.bat` (outputs to `dist/`).
+- **Install**: Run `install.bat` (installs from `dist/` to ImageJ).
 
 ---
 
