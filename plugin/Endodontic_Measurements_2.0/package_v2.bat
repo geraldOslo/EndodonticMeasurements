@@ -17,4 +17,10 @@ cd %BIN_DIR%
 "%JDK_BIN%\jar.exe" cvf ..\%JAR_NAME% .
 cd ..
 
+
 echo Packaging successful: %JAR_NAME%
+
+echo Copying to dist folder...
+copy %JAR_NAME% dist\ > nul
+copy Endodontic_Measurements.cfg dist\ > nul
+echo Files copied to dist\

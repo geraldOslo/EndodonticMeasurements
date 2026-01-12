@@ -7,6 +7,27 @@ The **Endodontic Measurements** plugin is a modernized tool for ImageJ designed 
 
 Version 2.0 features a completely refactored Swing-based UI, improved robustness, and dynamic scaling for better visibility on various screen resolutions.
 
+
+---
+
+## User Installation (Non-Technical)
+For easy installation without compiling code:
+
+
+### Windows
+1.  Open the `dist` folder.
+2.  Double-click `install.bat`.
+
+### Mac / Linux
+1.  Open Terminal.
+2.  Navigate to the `dist` folder.
+3.  Run `bash install.sh`.
+
+### Manual Installation
+Copy the files from the `dist` folder to your ImageJ plugins folder (e.g., `ImageJ/plugins/Endodontic_Measurements_2.0/`):
+- `Endodontic_Measurements_2.0.jar`
+- `Endodontic_Measurements.cfg`
+
 ---
 
 ## Purpose and Objectives
