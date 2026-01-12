@@ -30,14 +30,14 @@ if not exist "%DEST_DIR%" (
 )
 
 echo [4/4] Copying files...
-copy "%JAR_NAME%" "%DEST_DIR%\" > nul
+copy "dist\%JAR_NAME%" "%DEST_DIR%\" > nul
 if %errorlevel% neq 0 (
     echo Failed to copy JAR file.
     exit /b %errorlevel%
 )
 echo Copied %JAR_NAME%
 
-copy "%CONFIG_NAME%" "%DEST_DIR%\" > nul
+copy "dist\%CONFIG_NAME%" "%DEST_DIR%\" > nul
 if %errorlevel% neq 0 (
     echo Failed to copy config file.
     exit /b %errorlevel%
