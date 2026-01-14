@@ -1,49 +1,33 @@
 @echo off
-set "DEST_DIR=C:\ImageJ\plugins\Endodontic_Measurements"
-set "JAR_NAME=Endodontic_Measurements_2.0.jar"
-set "CONFIG_NAME=Endodontic_Measurements.cfg"
-
-echo Starting installation...
-
-echo [1/4] Compiling...
-call compile.bat
+where mvn >nul 2>nul
 if %errorlevel% neq 0 (
-    echo Compilation failed. Installation aborted.
-    exit /b %errorlevel%
-)
-
-echo [2/4] Packaging...
-call package.bat
-if %errorlevel% neq 0 (
-    echo Packaging failed. Installation aborted.
-    exit /b %errorlevel%
-)
-
-echo [3/4] creating destination directory...
-if not exist "%DEST_DIR%" (
-    mkdir "%DEST_DIR%"
-    if %errorlevel% neq 0 (
-        echo Failed to create directory: %DEST_DIR%
-        exit /b %errorlevel%
+    if exist "C:\Program Files\Maven\bin\mvn.cmd" (
+        echo mvn not in PATH, using C:\Program Files\Maven\bin\mvn.cmd
+        set "MAVEN_CMD=C:\Program Files\Maven\bin\mvn.cmd"
+        goto :found_maven
     )
-    echo Created %DEST_DIR%
+    echo Maven not found! Running fallback script...
+    call compile_fallback.bat
+    exit /b
 )
+set "MAVEN_CMD=mvn"
 
-echo [4/4] Copying files...
-copy "dist\%JAR_NAME%" "%DEST_DIR%\" > nul
+:found_maven
+echo Building with Maven...
+call "%MAVEN_CMD%" clean package
 if %errorlevel% neq 0 (
-    echo Failed to copy JAR file.
-    exit /b %errorlevel%
+    echo Maven build failed!
+    pause
+    exit /b
 )
-echo Copied %JAR_NAME%
 
-copy "dist\%CONFIG_NAME%" "%DEST_DIR%\" > nul
-if %errorlevel% neq 0 (
-    echo Failed to copy config file.
-    exit /b %errorlevel%
+echo Installing to ImageJ...
+if not exist "C:\ImageJ\plugins\" (
+    echo C:\ImageJ\plugins not found. Please copy target\Endodontic_Measurements_2-2.0.0.jar manually.
+    pause
+    exit /b
 )
-echo Copied %CONFIG_NAME%
 
-echo Installation successful!
-echo Plugin installed to: %DEST_DIR%
+copy target\Endodontic_Measurements_2-2.0.0.jar "C:\ImageJ\plugins\"
+echo Installation complete.
 pause

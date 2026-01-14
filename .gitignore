@@ -1,6 +1,11 @@
 /.classpath
 /.project
 /.settings/
+/output/
+/dist/
 /target/
+.idea/
+*.iml
+.vscode/
 Measured-*
 *.csv

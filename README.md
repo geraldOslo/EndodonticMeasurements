@@ -8,36 +8,24 @@ Version 2.0 features a completely refactored Swing-based UI, improved robustness
 
 ---
 
-## User Installation (Non-Technical)
-For easy installation without compiling code:
+## Installation
 
+### Quick Install (Windows)
+1.  Run `install.bat` from the project root.
+2.  This script will automatically:
+    - Check for Maven (and use it if found).
+    - Fall back to a standard Java compilation if Maven is missing.
+    - Install the plugin to `C:\ImageJ\plugins`.
 
-### Windows
-1.  Open the `dist` folder.
-2.  Double-click `install.bat`.
+### Manual Install (Maven)
+1.  Run `mvn clean package`.
+2.  Copy `target/Endodontic_Measurements_2-2.0.0.jar` to your ImageJ `plugins` folder.
 
-### Mac / Linux
-1.  Open Terminal.
-2.  Navigate to the `dist` folder.
-3.  Run `bash install.sh`.
+### Manual Install (No Maven)
+1.  Run `compile_fallback.bat`.
+2.  Copy `Endodontic_Measurements_2.jar` to your ImageJ `plugins` folder.
 
-### Manual Installation
-Copy the files from the `dist` folder to your ImageJ plugins folder (e.g., `ImageJ/plugins/Endodontic_Measurements/`):
-- `Endodontic_Measurements_2.0.jar`
-- `Endodontic_Measurements.cfg`
-
----
-
-## Purpose and Objectives
-Repeated measurements of sites, distances, and angles for evaluating endodontic outcomes can be time-consuming and error-prone. This plugin provides a streamlined interface that allows the observer to:
-- Concentrate on locating the correct anatomical points.
-- Automatically store coordinates via mouse clicks.
-- Record qualitative observations using standardized radio buttons.
-- Calculate geometric metrics like the **Schneider angle** and root canal diameters.
-
----
-
-## Instructions for Use
+## Usage
 
 ### Setting up Measurements
 1. Open a radiograph in ImageJ.
@@ -177,17 +165,7 @@ The plugin looks for `Endodontic_Measurements.cfg` in the following locations:
 
 ---
 
-## Compilation and Running
-To compile and run the plugin, you can use the provided batch scripts in the repository root.
 
-### Requirements
-- **Java Development Kit (JDK)**: Version 8 or higher.
-- **ImageJ**: A local installation of ImageJ with `ij.jar`.
-
-### Commands
-- **Compile**: Run `compile.bat`.
-- **Package**: Run `package.bat` (outputs to `dist/`).
-- **Install**: Run `install.bat` (installs from `dist/` to ImageJ).
 
 ---
 
