@@ -36,8 +36,8 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
     private JButton saveButton, resetButton;
 
     // Constants from original app for site names
-    private final String[] rootNames = { "M", "D", "B", "P", "S", "1", "2", "3" };
-    // private final String[] imageTypes = { "Digital", "Analog" }; // Removed
+    private final String[] rootNames = { "1", "B", "L", "M", "D", "MB", "ML", "DB", "DL", "X" };
+    private final String[] imageTypes = { "Preop", "Compl", "Ctrl", "Other" };
     private final String[] singleSitesNames = { "Apex", "Apex GP", "Root canal deviation", "Canal entrance center",
             "Lesion periphery" };
     private final String[] mdSitesNames = { "Lesion side", "Bone level", "CEJ", "Canal side 1mm", "Canal side 4mm" };
@@ -71,7 +71,7 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
 
         void onQualitativeSelected(String key, String value);
 
-        void onIdentificationChanged(int quadrant, String tooth, String root);
+        void onIdentificationChanged(int quadrant, String tooth, String root, String imageType);
     }
 
     public MeasurementUI(String title, ControlListener listener, AppConfig config) {
@@ -125,6 +125,13 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(createActionPanel(), c);
+
+        // Disable everything until properly identified
+        setMeasurementsEnabled(mainPanel, false);
+
+        // Re-enable Identification Panel explicitly
+        // Index 0 is the Identification panel we just added first
+        setMeasurementsEnabled((JPanel) mainPanel.getComponent(0), true);
 
         // Add to scroll pane as v1.5 did
         JScrollPane scrollPane = new JScrollPane(mainPanel);
@@ -246,8 +253,34 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
             rPanel.add(rb);
         }
         mainPanel.add(rPanel);
+        // Image Type panel
+        JPanel iPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        iPanel.add(new JLabel("Image Type:"));
+        iTypeGroup = new ButtonGroup();
+        for (String type : imageTypes) {
+            JRadioButton rb = createRadioButton(type, "QTR_iType;" + type);
+            iTypeGroup.add(rb);
+            iPanel.add(rb);
+        }
+        mainPanel.add(iPanel);
 
         return mainPanel;
+    }
+
+    /**
+     * Recursively enables or disables components in a container.
+     */
+    private void setMeasurementsEnabled(Container container, boolean enabled) {
+        for (Component c : container.getComponents()) {
+            if (c instanceof JRadioButton) {
+                // If it's a radio button in the identification panel, we don't touch it
+                // We handle identifying the ID panel gracefully above by leaving it entirely
+            }
+            c.setEnabled(enabled);
+            if (c instanceof Container) {
+                setMeasurementsEnabled((Container) c, enabled);
+            }
+        }
     }
 
     private JPanel createSitesPanel() {
@@ -519,7 +552,28 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         int q = getSelectedValue(qNumberGroup, -1);
         String t = getSelectedActionCommand(tNumberGroup, "-1");
         String r = getSelectedActionCommand(rNumberGroup, "-1");
-        listener.onIdentificationChanged(q, t, r);
+        String it = getSelectedActionCommand(iTypeGroup, "-1");
+
+        listener.onIdentificationChanged(q, t, r, it);
+
+        boolean isFullyIdentified = (q != -1 && !"-1".equals(t) && !"-1".equals(r) && !"-1".equals(it));
+
+        Component[] comps = this.getComponents();
+        for (Component c : comps) {
+            if (c instanceof JScrollPane) {
+                Component view = ((JScrollPane) c).getViewport().getView();
+                if (view instanceof JPanel) {
+                    JPanel mainPanel = (JPanel) view;
+                    // First component is Identification Panel, skip index 0
+                    for (int i = 1; i < mainPanel.getComponentCount(); i++) {
+                        Component child = mainPanel.getComponent(i);
+                        if (child instanceof Container) {
+                            setMeasurementsEnabled((Container) child, isFullyIdentified);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private int getSelectedValue(ButtonGroup bg, int def) {
@@ -560,7 +614,7 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         qNumberGroup.clearSelection();
         tNumberGroup.clearSelection();
         rNumberGroup.clearSelection();
-        // iTypeGroup.clearSelection(); // Removed
+        iTypeGroup.clearSelection();
 
         // Clear site selections
         if (singleSiteGroups != null) {

@@ -5,6 +5,7 @@ The **Endodontic Measurements** plugin is a modernized tool for ImageJ designed 
 
 Version 2.0 features a completely refactored Swing-based UI, improved robustness, and dynamic scaling for better visibility on various screen resolutions.
 
+**Disclaimer:** This new version is currently undergoing active development and has not yet been thoroughly tested. Please manually verify your outputs during usage.
 
 ---
 
@@ -17,9 +18,10 @@ Version 2.0 features a completely refactored Swing-based UI, improved robustness
     - Fall back to a standard Java compilation if Maven is missing.
     - Install the plugin to `C:\ImageJ\plugins`.
 
-### Manual Install (Maven)
-1.  Run `mvn clean package`.
-2.  Copy `target/Endodontic_Measurements_2-2.0.0.jar` to your ImageJ `plugins` folder.
+### Manual Install (Zip / JAR)
+1. Download the provided Release zip file.
+2. Extract the contents (`Endodontic_Measurements_2-2.0.0.jar` and `Endodontic_Measurements.cfg`) directly into your ImageJ `plugins` folder.
+*Note: If you are building from source, you can generate the JAR by running `mvn clean package` and then copying the JAR from the `target/` directory.*
 
 ### Manual Install (No Maven)
 1.  Run `compile_fallback.bat`.
@@ -31,7 +33,8 @@ Version 2.0 features a completely refactored Swing-based UI, improved robustness
 1. Open a radiograph in ImageJ.
 2. Launch the plugin by pressing **F5** (or via Plugins > Endodontic Measurements 2.0).
 3. Select the **Point Tool** (the plugin ensures this is selected by default).
-3. Identify the object by selecting the **Quadrant**, **Tooth**, and **Root** numbers in the identification panel.
+4. Identify the object by selecting the **Quadrant**, **Tooth**, **Root**, and **Image Type** in the identification panel.
+5. **Note:** The measurement and observations panels are locked by default. They will automatically unlock and become available once you have fully identified the root by selecting a value for all four fields above.
 
 ### Placing Markers
 - Click on the point for a landmark on the X-ray image.
@@ -145,7 +148,9 @@ The plugin creates a copy of the image with all measured sites and reference lin
 - **Filename**: `Measured-<timestamp>-<original_filename>.tif`
 
 ### 2) Result File (CSV)
-Measurements are appended to a CSV file. Version 2.0 introduces a specific naming convention:
+Measurements are appended to a CSV file. Version 2.0 exports data using the following exact ordered format:
+`filepath, timestamp, operator, image type, unit, quadrant, tooth, root, PAI, Ap voids, Cor voids, Orifice plug, Ap file fract, Cor file fract, Ap perf, Cor perf, Post, Restoration gap, Caries, Restoration, Support/load, [Site Coordinates x/y]..., Comment`
+
 - **Local Storage**: Results are saved as `<original_filename>.csv` in the same folder as the image.
 - **Global Storage**: Results are saved to `Measurements.csv` in the directory **above** the image directory.
 
@@ -153,9 +158,9 @@ Measurements are appended to a CSV file. Version 2.0 introduces a specific namin
 
 ## Configuration
 The plugin looks for `Endodontic_Measurements.cfg` in the following locations:
-1. The local directory where the plugin is running.
-2. `ImageJ/plugins/Endodontic_Measurements/`.
-
+1. The ImageJ `plugins/` directory (Recommended for manually dragged JARs).
+2. The `ImageJ/plugins/Endodontic_Measurements_2.0/` directory.
+3. The local directory where the plugin is running.
 
 **Config Options:**
 - `operator`: <Your Name/ID>

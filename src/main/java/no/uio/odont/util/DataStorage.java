@@ -80,6 +80,10 @@ public class DataStorage {
      */
     public void saveScoredImageCopy(ImagePlus imp, MeasurementRoot root) {
         ImagePlus copy = imp.duplicate();
+
+        // Convert to RGB so colored dots are visible in standard image viewers
+        new ij.process.ImageConverter(copy).convertToRGB();
+
         ImageProcessor ip = copy.getProcessor();
 
         root.getSites().forEach((name, site) -> {
@@ -93,10 +97,18 @@ public class DataStorage {
         String originalName = imp.getTitle();
         String newName = "Measured-" + timestamp + "-" + originalName;
 
+        // Replace extension with .png
+        int dotIndex = newName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            newName = newName.substring(0, dotIndex) + ".png";
+        } else {
+            newName += ".png";
+        }
+
         FileInfo fi = imp.getOriginalFileInfo();
         String directory = (fi != null && fi.directory != null) ? fi.directory : System.getProperty("user.dir");
 
-        IJ.saveAsTiff(copy, Paths.get(directory, newName).toString());
+        IJ.saveAs(copy, "PNG", Paths.get(directory, newName).toString());
     }
 
     private void drawMarker(ImageProcessor ip, int x, int y, int size) {

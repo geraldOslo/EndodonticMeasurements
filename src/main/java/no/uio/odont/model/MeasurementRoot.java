@@ -35,6 +35,7 @@ public class MeasurementRoot {
     private int quadrantNumber = -1;
     private String toothNumber = "-1";
     private String rootName = "-1";
+    private String imageType = "-1";
 
     // Configuration for arc diameters (in mm)
     private static final double NEAR_DISTANCE = 1.0;
@@ -74,8 +75,12 @@ public class MeasurementRoot {
         this.rootName = name;
     }
 
+    public void setImageType(String type) {
+        this.imageType = type;
+    }
+
     public boolean isFullyIdentified() {
-        return quadrantNumber > 0 && !"-1".equals(toothNumber) && !"-1".equals(rootName);
+        return quadrantNumber > 0 && !"-1".equals(toothNumber) && !"-1".equals(rootName) && !"-1".equals(imageType);
     }
 
     public void addSite(String name, double x, double y, Color color) {
@@ -165,8 +170,9 @@ public class MeasurementRoot {
 
     public String toString(char csvSeparator) {
         return String.format(
-                "%s" + csvSeparator + " %d" + csvSeparator + " %s" + csvSeparator + " %s" + csvSeparator + " ",
-                calibration.getUnit(), quadrantNumber, toothNumber, rootName);
+                "%s" + csvSeparator + "%s" + csvSeparator + "%d" + csvSeparator + "%s" + csvSeparator + "%s"
+                        + csvSeparator,
+                imageType, calibration.getUnit(), quadrantNumber, toothNumber, rootName);
     }
 
     /**

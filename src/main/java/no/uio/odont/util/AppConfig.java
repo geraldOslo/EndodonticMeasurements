@@ -77,6 +77,11 @@ public class AppConfig {
             File legacyConfig = Paths.get(pluginsDir, "Endodontic_Measurements", CONFIG_FILE_NAME).toFile();
             if (legacyConfig.exists())
                 return legacyConfig;
+
+            // 4. Check base plugins directory
+            File baseConfig = Paths.get(pluginsDir, CONFIG_FILE_NAME).toFile();
+            if (baseConfig.exists())
+                return baseConfig;
         }
 
         return null;

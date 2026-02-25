@@ -60,8 +60,9 @@ public class AutomationTest {
             int quadrant = rand.nextInt(4) + 1;
             String tooth = String.valueOf(rand.nextInt(8) + 1);
             String root = "M";
+            String imageType = "Other";
             System.out.println("Simulating Identification: Q" + quadrant + ", T" + tooth + ", R" + root);
-            plugin.onIdentificationChanged(quadrant, tooth, root);
+            plugin.onIdentificationChanged(quadrant, tooth, root, imageType);
 
             // 2. Site Selection (simulate clicking points)
             String[] siteNames = { "Apex", "Apex GP", "Root canal deviation", "Canal entrance center" };

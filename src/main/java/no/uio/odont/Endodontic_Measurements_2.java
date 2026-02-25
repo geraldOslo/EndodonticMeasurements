@@ -55,7 +55,7 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
     @Override
     public void onSaveRequested() {
         if (!currentRoot.isFullyIdentified()) {
-            IJ.error("Identification required", "Please select quadrant, tooth, and root before saving.");
+            IJ.error("Identification required", "Please select quadrant, tooth, root, and image type before saving.");
             return;
         }
 
@@ -64,19 +64,21 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
         String path = (fi != null) ? fi.directory + fi.fileName : imp.getTitle();
         char sep = config.getCsvSeparator();
 
-        // Header info
+        // Header info: filepath,timestamp,operator,image type,unit,quadrant,tooth,root
         sb.append(path).append(sep);
-        sb.append(storage.generateTimestamp()).append(sep).append(" ");
-        sb.append(config.getOperator()).append(sep).append(" ");
-        sb.append(currentRoot.toString(sep)); // contains unit; quadrant; tooth; root;
+        sb.append(storage.generateTimestamp()).append(sep);
+        sb.append(config.getOperator()).append(sep);
+        sb.append(currentRoot.toString(sep)); // Contains: image_type, unit, quadrant, tooth, root (all separated)
 
         // Qualitative observations
-        sb.append(currentRoot.getQualitativeObservation("pAi")).append(sep).append(" ");
-        String[] qNames = { "Apical voids", "Coronal voids", "Orifice plug", "Apical frac.",
-                "Coronal frac.", "Apical perf.", "Coronal perf.", "Post",
-                "Resto gap", "Caries", "Restoration", "Support" };
+        // PAI,Ap voids,Cor voids,Orifice plug,Ap file fract,Cor file fract,Ap perf,Cor
+        // perf,Post,Restoration gap,Caries,Restoration,Support/load
+        sb.append(currentRoot.getQualitativeObservation("pAi")).append(sep);
+        String[] qNames = { "Apical voids", "Coronal voids", "Orifice plug", "Apical file fracture",
+                "Coronal file fracture", "Apical perforation", "Coronal perforation", "Post",
+                "Restoration gap", "Caries", "Restoration", "Support/load" };
         for (String q : qNames) {
-            sb.append(currentRoot.getQualitativeObservation(q)).append(sep).append(" ");
+            sb.append(currentRoot.getQualitativeObservation(q)).append(sep);
         }
 
         // Site coordinates
@@ -92,7 +94,7 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
             sb.append(currentRoot.getSiteCoordinatesString(s + "D", sep));
         }
 
-        sb.append(sep).append(" ").append(ui.getComments());
+        sb.append(ui.getComments());
 
         storage.saveResults(currentRoot, config, sb.toString(), imp);
         if (config.isSaveScoredCopy()) {
@@ -152,10 +154,11 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
     }
 
     @Override
-    public void onIdentificationChanged(int quadrant, String tooth, String root) {
+    public void onIdentificationChanged(int quadrant, String tooth, String root, String imageType) {
         currentRoot.setQuadrantNumber(quadrant);
         currentRoot.setToothNumber(tooth);
         currentRoot.setRootName(root);
+        currentRoot.setImageType(imageType);
     }
 
     /**
