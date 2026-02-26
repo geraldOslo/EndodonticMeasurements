@@ -25,7 +25,7 @@ public class AppConfig {
     private String measurementStore; // "top" or "local"
     private boolean saveScoredCopy;
 
-    private static final String DEFAULT_STORAGE_MODE = "top";
+    private static final String DEFAULT_STORAGE_MODE = "local";
     private static final String CONFIG_FILE_NAME = "Endodontic_Measurements.cfg";
 
     public AppConfig() {

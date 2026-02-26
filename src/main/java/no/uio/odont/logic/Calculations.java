@@ -1,8 +1,6 @@
 package no.uio.odont.logic;
 
 import java.awt.geom.Point2D;
-import no.uio.odont.model.MeasurementRoot;
-import no.uio.odont.model.MeasurementSite;
 
 /**
  * Utility class for performing endodontic calculations.

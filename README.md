@@ -25,7 +25,8 @@ Version 2.0 features a completely refactored Swing-based UI, improved robustness
 
 ### Manual Install (No Maven)
 1.  Run `compile_fallback.bat`.
-2.  Copy `Endodontic_Measurements_2.jar` to your ImageJ `plugins` folder.
+    The script compiles, packages, and installs the plugin automatically.
+    If `C:\ImageJ\plugins` is not found, copy `Endodontic_Measurements_2.jar` to your ImageJ plugins folder manually.
 
 ## Usage
 
@@ -38,9 +39,10 @@ Version 2.0 features a completely refactored Swing-based UI, improved robustness
 
 ### Placing Markers
 - Click on the point for a landmark on the X-ray image.
-- Select a the corresponding site button (e.g., "Apex").
+- Select the corresponding site button (e.g., "Apex").
 - The plugin will record the point and provide visual feedback.
 - **Reference Circles**: When you place the **Apex GP** point, two circles (1mm and 4mm radius) are automatically drawn to guide you in placing the root canal diameter points.
+- **Persistent markers**: After saving a root with "Save canal data", all placed markers remain visible on the image. This lets you see previously measured roots while continuing to measure additional ones on the same radiograph.
 
 ### Sites Registered
 

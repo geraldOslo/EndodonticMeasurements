@@ -73,7 +73,6 @@ public class AutomationTest {
                 imp.setRoi(new PointRoi(x, y));
 
                 IJ.log("Placing site [" + siteName + "] at coordinate (" + x + ", " + y + ")");
-                imp.setRoi(new PointRoi(x, y));
                 plugin.onSiteSelected(siteName, Color.BLUE);
             }
 

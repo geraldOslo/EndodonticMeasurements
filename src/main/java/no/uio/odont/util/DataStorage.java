@@ -56,7 +56,8 @@ public class DataStorage {
 
         if (config.isLocalStore()) {
             // Local store: same folder as image, same name with .csv extension
-            String csvName = fileName.substring(0, fileName.lastIndexOf('.')) + ".csv";
+            int dotIndex = fileName.lastIndexOf('.');
+            String csvName = (dotIndex > 0 ? fileName.substring(0, dotIndex) : fileName) + ".csv";
             return Paths.get(directory, csvName);
         } else {
             // Global store: folder above image folder, fixed filename

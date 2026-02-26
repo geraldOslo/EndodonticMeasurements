@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(call install.bat)",
+      "Bash(cmd.exe /c install.bat)",
+      "Bash(cmd.exe /c \"cd /d c:\\\\Temp\\\\EndodonticMeasurements && install.bat\")",
+      "Bash(cmd.exe /c \"cd /d c:\\\\Temp\\\\EndodonticMeasurements && install.bat > build_output.txt 2>&1 && type build_output.txt\")",
+      "Read(//c/Temp/**)",
+      "Bash(where:*)",
+      "Bash(javac:*)"
+    ],
+    "additionalDirectories": [
+      "c:\\ImageJ\\plugins"
+    ]
+  }
+}

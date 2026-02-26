@@ -2,14 +2,12 @@ package no.uio.odont;
 
 import java.awt.Color;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.List;
 
 import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.WindowManager;
+import ij.gui.Overlay;
 import ij.gui.Roi;
 import ij.gui.Toolbar;
 import ij.io.FileInfo;
@@ -33,6 +31,7 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
     private DataStorage storage;
     private MeasurementRoot currentRoot;
     private MeasurementUI ui;
+    private Overlay historicOverlay;
 
     @Override
     public void run(String arg) {
@@ -44,7 +43,9 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
 
         config = new AppConfig();
         storage = new DataStorage();
-        currentRoot = new MeasurementRoot(imp, config.getDecimalSeparator());
+        historicOverlay = new Overlay();
+        historicOverlay.selectable(false);
+        currentRoot = new MeasurementRoot(imp, config.getDecimalSeparator(), historicOverlay);
 
         // Ensure point tool is selected
         IJ.setTool(Toolbar.POINT);
@@ -101,10 +102,15 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
             storage.saveScoredImageCopy(imp, currentRoot);
         }
 
+        // Snapshot current sites into the historic overlay so they stay visible
+        // on the image after the current root is reset.
+        currentRoot.copySitesToOverlay(historicOverlay);
+
         onResetRequested();
         IJ.showStatus("Measurements saved.");
     }
 
+    @Override
     public void onSaveAndCloseRequested() {
         onSaveRequested();
         if (imp != null) {
@@ -115,7 +121,7 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
 
     @Override
     public void onResetRequested() {
-        currentRoot = new MeasurementRoot(imp, config.getDecimalSeparator());
+        currentRoot = new MeasurementRoot(imp, config.getDecimalSeparator(), historicOverlay);
         ui.reset();
     }
 
@@ -127,8 +133,8 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
             return;
         }
 
-        double x = roi.getBounds().getX() + roi.getBounds().getWidth() / 2.0;
-        double y = roi.getBounds().getY() + roi.getBounds().getHeight() / 2.0;
+        double x = roi.getFloatPolygon().xpoints[0];
+        double y = roi.getFloatPolygon().ypoints[0];
 
         currentRoot.addSite(siteName, x, y, color);
 
@@ -138,6 +144,9 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
         }
 
         imp.deleteRoi(); // Clear ROI after recording
+        // Defensive refresh: some ImageJ versions clear the overlay when deleteRoi()
+        // triggers a repaint. Re-applying ensures markers are always visible.
+        currentRoot.refreshOverlay();
     }
 
     @Override

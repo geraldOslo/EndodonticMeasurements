@@ -243,15 +243,19 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         tPanel.add(rbX);
         mainPanel.add(tPanel);
 
-        // Root number panel
-        JPanel rPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        rPanel.add(new JLabel("Root:"));
+        // Root number panel — BorderLayout keeps the label pinned to the left while
+        // GridLayout(1, 0) forces all buttons into a single row, avoiding both the
+        // FlowLayout-in-BoxLayout height-clipping bug and the unwanted two-row split.
+        JPanel rPanel = new JPanel(new BorderLayout(5, 0));
+        rPanel.add(new JLabel("Root:"), BorderLayout.WEST);
+        JPanel rButtonGrid = new JPanel(new GridLayout(1, 0, 2, 0));
         rNumberGroup = new ButtonGroup();
         for (String rootName : rootNames) {
             JRadioButton rb = createRadioButton(rootName, "QTR_rNumber;" + rootName);
             rNumberGroup.add(rb);
-            rPanel.add(rb);
+            rButtonGrid.add(rb);
         }
+        rPanel.add(rButtonGrid, BorderLayout.CENTER);
         mainPanel.add(rPanel);
         // Image Type panel
         JPanel iPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -272,10 +276,6 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
      */
     private void setMeasurementsEnabled(Container container, boolean enabled) {
         for (Component c : container.getComponents()) {
-            if (c instanceof JRadioButton) {
-                // If it's a radio button in the identification panel, we don't touch it
-                // We handle identifying the ID panel gracefully above by leaving it entirely
-            }
             c.setEnabled(enabled);
             if (c instanceof Container) {
                 setMeasurementsEnabled((Container) c, enabled);
@@ -489,34 +489,6 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
         return panel;
     }
 
-    private JPanel createRadioRow(String label, String cmdPrefix, int start, int end, ButtonGroup group,
-            String... extra) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(new JLabel(label));
-        for (int i = start; i <= end; i++) {
-            JRadioButton rb = createRadioButton(String.valueOf(i), cmdPrefix + ";" + i);
-            group.add(rb);
-            p.add(rb);
-        }
-        for (String s : extra) {
-            JRadioButton rb = createRadioButton(s, cmdPrefix + ";" + s);
-            group.add(rb);
-            p.add(rb);
-        }
-        return p;
-    }
-
-    private JPanel createRadioRow(String label, String cmdPrefix, String[] items, ButtonGroup group) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.add(new JLabel(label));
-        for (String item : items) {
-            JRadioButton rb = createRadioButton(item, cmdPrefix + ";" + item);
-            group.add(rb);
-            p.add(rb);
-        }
-        return p;
-    }
-
     private JRadioButton createRadioButton(String text, String cmd) {
         JRadioButton rb = new JRadioButton(text);
         rb.setMargin(new Insets(0, 0, 0, 0));
@@ -655,9 +627,10 @@ public class MeasurementUI extends PlugInFrame implements ActionListener {
 
         commentsField.setText("");
 
-        // Request repaint to ensure UI updates visually if needed,
-        // though ButtonGroup changes should handle it.
-        this.repaint();
+        // clearSelection() does NOT fire action events, so updateIdentification()
+        // is never triggered automatically. Call it explicitly so the measurement
+        // panels are re-disabled until the user re-identifies the root.
+        updateIdentification();
     }
 
     public String getComments() {

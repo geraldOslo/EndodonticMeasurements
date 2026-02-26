@@ -32,6 +32,9 @@ public class MeasurementRoot {
     // Store reference arcs separately so we can clear them easily
     private final Map<String, Roi> referenceRois = new LinkedHashMap<>();
 
+    // Historic ROIs from previously saved roots — shown persistently on the image
+    private final Overlay baseOverlay;
+
     private int quadrantNumber = -1;
     private String toothNumber = "-1";
     private String rootName = "-1";
@@ -46,10 +49,13 @@ public class MeasurementRoot {
      *
      * @param imp                 The image being measured.
      * @param decimalFormatSymbol The symbol to use for decimal separation.
+     * @param baseOverlay         Historic ROIs from previously saved roots to keep
+     *                            visible. Pass an empty Overlay for a clean start.
      */
-    public MeasurementRoot(ImagePlus imp, char decimalFormatSymbol) {
+    public MeasurementRoot(ImagePlus imp, char decimalFormatSymbol, Overlay baseOverlay) {
         this.imp = imp;
         this.calibration = imp.getCalibration();
+        this.baseOverlay = (baseOverlay != null) ? baseOverlay : new Overlay();
 
         // Initialize formatter based on calibration units
         String pattern = calibration.getUnit().equals("pixels") ? "####" : "0.00";
@@ -58,9 +64,8 @@ public class MeasurementRoot {
         symbols.setDecimalSeparator(decimalFormatSymbol);
         this.formatter.setDecimalFormatSymbols(symbols);
 
-        // Ensure any existing overlay is cleared or managed?
-        // For V2.0 start fresh
-        imp.setOverlay(null);
+        // Apply the base overlay immediately so historic markers stay visible
+        refreshOverlay();
     }
 
     public void setQuadrantNumber(int number) {
@@ -104,9 +109,22 @@ public class MeasurementRoot {
 
     /**
      * Rebuilds the overlay with all current sites and reference ROIs.
+     *
+     * This is public so the controller can call it after imp.deleteRoi() as a
+     * defensive measure — in some ImageJ versions deleteRoi() can affect the overlay.
      */
-    private void refreshOverlay() {
+    public void refreshOverlay() {
         Overlay overlay = new Overlay();
+
+        // Prevent the Point Tool from picking up overlay markers as selections.
+        // Without this, clicking near a registered-site PointRoi removes it from
+        // the overlay and makes it the active selection, causing it to "disappear".
+        overlay.selectable(false);
+
+        // Show historic markers from previously saved roots first (behind current ones)
+        for (int i = 0; i < baseOverlay.size(); i++) {
+            overlay.add(baseOverlay.get(i));
+        }
 
         // Add all measurement sites
         for (Map.Entry<String, MeasurementSite> entry : sites.entrySet()) {
@@ -117,7 +135,6 @@ public class MeasurementRoot {
             roi.setName(name);
             roi.setStrokeColor(site.getColor());
 
-            // Add to overlay
             overlay.add(roi);
         }
 
@@ -173,6 +190,19 @@ public class MeasurementRoot {
                 "%s" + csvSeparator + "%s" + csvSeparator + "%d" + csvSeparator + "%s" + csvSeparator + "%s"
                         + csvSeparator,
                 imageType, calibration.getUnit(), quadrantNumber, toothNumber, rootName);
+    }
+
+    /**
+     * Copies all current measurement sites (but not reference arcs) into the
+     * supplied overlay. Called before reset so the saved markers persist visually.
+     */
+    public void copySitesToOverlay(Overlay target) {
+        for (Map.Entry<String, MeasurementSite> entry : sites.entrySet()) {
+            Roi roi = entry.getValue().toRoi();
+            roi.setName(entry.getKey());
+            roi.setStrokeColor(entry.getValue().getColor());
+            target.add(roi);
+        }
     }
 
     /**
