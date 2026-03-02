@@ -7,12 +7,16 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import java.awt.Color;
+
 import ij.IJ;
 import ij.ImagePlus;
+import ij.gui.Overlay;
+import ij.gui.PointRoi;
+import ij.gui.Roi;
 import ij.io.FileInfo;
 import ij.process.ImageProcessor;
 import no.uio.odont.model.MeasurementRoot;
-import no.uio.odont.model.MeasurementSite;
 
 /**
  * Handles saving of measurement results and modified images.
@@ -77,22 +81,34 @@ public class DataStorage {
     }
 
     /**
-     * Saves a copy of the image with markers burnt in.
+     * Saves a copy of the image with all accumulated markers burnt in.
+     * Called only at "Save and close" so all measured roots appear together.
+     *
+     * @param imp            The source image.
+     * @param historicOverlay The overlay containing every saved site across all roots.
      */
-    public void saveScoredImageCopy(ImagePlus imp, MeasurementRoot root) {
+    public void saveScoredImageCopy(ImagePlus imp, Overlay historicOverlay) {
         ImagePlus copy = imp.duplicate();
 
-        // Convert to RGB so colored dots are visible in standard image viewers
+        // Convert to RGB so colored markers are visible in standard image viewers
         new ij.process.ImageConverter(copy).convertToRGB();
 
         ImageProcessor ip = copy.getProcessor();
 
-        root.getSites().forEach((name, site) -> {
-            ip.setColor(site.getColor());
-            ip.drawDot((int) site.getX(), (int) site.getY());
-            // Optionally draw a circle or cross
-            drawMarker(ip, (int) site.getX(), (int) site.getY(), 5);
-        });
+        for (int i = 0; i < historicOverlay.size(); i++) {
+            Roi roi = historicOverlay.get(i);
+            if (!(roi instanceof PointRoi)) continue;
+
+            Color color = roi.getStrokeColor();
+            if (color == null) color = Color.RED;
+
+            int x = Math.round(roi.getFloatPolygon().xpoints[0]);
+            int y = Math.round(roi.getFloatPolygon().ypoints[0]);
+
+            ip.setColor(color);
+            ip.drawDot(x, y);
+            drawRing(ip, x, y, 5);
+        }
 
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
         String originalName = imp.getTitle();
@@ -112,10 +128,9 @@ public class DataStorage {
         IJ.saveAs(copy, "PNG", Paths.get(directory, newName).toString());
     }
 
-    private void drawMarker(ImageProcessor ip, int x, int y, int size) {
-        ip.drawOval(x - size, y - size, size * 2, size * 2);
-        ip.drawLine(x - size, y, x + size, y);
-        ip.drawLine(x, y - size, x, y + size);
+    /** Draws a ring (circle outline) of the given radius around (x, y). */
+    private void drawRing(ImageProcessor ip, int x, int y, int radius) {
+        ip.drawOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
     public String generateTimestamp() {

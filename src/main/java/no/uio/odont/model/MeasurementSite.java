@@ -38,7 +38,10 @@ public class MeasurementSite {
     }
 
     public PointRoi toRoi() {
-        return new PointRoi(coordinates.x, coordinates.y);
+        PointRoi roi = new PointRoi(coordinates.x, coordinates.y);
+        roi.setPointType(PointRoi.DOT);
+        roi.setSize(1); // small filled dot, no crosshair
+        return roi;
     }
 
     public double getX() {

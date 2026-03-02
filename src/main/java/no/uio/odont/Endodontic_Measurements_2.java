@@ -98,9 +98,6 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
         sb.append(ui.getComments());
 
         storage.saveResults(currentRoot, config, sb.toString(), imp);
-        if (config.isSaveScoredCopy()) {
-            storage.saveScoredImageCopy(imp, currentRoot);
-        }
 
         // Snapshot current sites into the historic overlay so they stay visible
         // on the image after the current root is reset.
@@ -113,6 +110,10 @@ public class Endodontic_Measurements_2 implements PlugIn, MeasurementUI.ControlL
     @Override
     public void onSaveAndCloseRequested() {
         onSaveRequested();
+        // Save the scored image copy only now, so all roots are shown together.
+        if (config.isSaveScoredCopy()) {
+            storage.saveScoredImageCopy(imp, historicOverlay);
+        }
         if (imp != null) {
             imp.close();
         }

@@ -126,7 +126,7 @@ public class MeasurementRoot {
             overlay.add(baseOverlay.get(i));
         }
 
-        // Add all measurement sites
+        // Add all measurement sites (dot + ring per site)
         for (Map.Entry<String, MeasurementSite> entry : sites.entrySet()) {
             String name = entry.getKey();
             MeasurementSite site = entry.getValue();
@@ -134,8 +134,12 @@ public class MeasurementRoot {
             Roi roi = site.toRoi();
             roi.setName(name);
             roi.setStrokeColor(site.getColor());
-
             overlay.add(roi);
+
+            OvalRoi ring = siteRing(site);
+            ring.setName(name + "_ring");
+            ring.setStrokeColor(site.getColor());
+            overlay.add(ring);
         }
 
         // Add all reference arcs
@@ -195,14 +199,30 @@ public class MeasurementRoot {
     /**
      * Copies all current measurement sites (but not reference arcs) into the
      * supplied overlay. Called before reset so the saved markers persist visually.
+     * Each site is stored as a dot PointRoi + a ring OvalRoi so the historic view
+     * matches the appearance during measurement.
      */
     public void copySitesToOverlay(Overlay target) {
         for (Map.Entry<String, MeasurementSite> entry : sites.entrySet()) {
-            Roi roi = entry.getValue().toRoi();
-            roi.setName(entry.getKey());
-            roi.setStrokeColor(entry.getValue().getColor());
+            String name = entry.getKey();
+            MeasurementSite site = entry.getValue();
+
+            Roi roi = site.toRoi();
+            roi.setName(name);
+            roi.setStrokeColor(site.getColor());
             target.add(roi);
+
+            OvalRoi ring = siteRing(site);
+            ring.setName(name + "_ring");
+            ring.setStrokeColor(site.getColor());
+            target.add(ring);
         }
+    }
+
+    /** Creates a small ring OvalRoi centered on the given site (fixed 5 px radius). */
+    private static OvalRoi siteRing(MeasurementSite site) {
+        int r = 5;
+        return new OvalRoi(site.getX() - r, site.getY() - r, r * 2, r * 2);
     }
 
     /**
